@@ -1,3 +1,7 @@
+![LOGO](https://user-images.githubusercontent.com/62508697/139729943-d46fc1ee-9344-4563-9d7d-2369f38fce54.jpeg)
+
+
+
 # Falcon
 
 Manage and control workflow app
@@ -29,4 +33,4 @@ all their tasks in the same place in an organize and easy way, so they will know
 5. Use any browser and navigate to - `localhost:8000`.
 
 # The Team
-![OurTeamImage](https://github.com/aradz1997/beyond-os-06-group-2/tree/main/Resources/OurTeam.jpeg)
+![OurTeam](https://user-images.githubusercontent.com/62508697/139729498-30e80549-55f3-41a1-8812-08e92ce03705.jpeg)
