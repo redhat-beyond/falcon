@@ -11,4 +11,4 @@ Manage and control workflow app
    ```
 3. Open any terminal and navigate to the project directory.
 4. Run the `vagrant up` command.
-5. Use any browser and navigate to - `localhost:8080`.
+5. Use any browser and navigate to - `localhost:8000`.
