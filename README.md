@@ -29,4 +29,4 @@ all their tasks in the same place in an organize and easy way, so they will know
 5. Use any browser and navigate to - `localhost:8000`.
 
 # The Team
-![OurTeamImage](https://github.com/aradz1997/beyond-os-06-group-2/tree/main/Resources/OurTeam.jpeg?raw=true)
+![OurTeamImage](https://github.com/aradz1997/beyond-os-06-group-2/tree/main/Resources/OurTeam.jpeg)
