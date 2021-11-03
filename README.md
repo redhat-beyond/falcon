@@ -1,19 +1,20 @@
-![LOGO](https://user-images.githubusercontent.com/62508697/139729943-d46fc1ee-9344-4563-9d7d-2369f38fce54.jpeg)
+
+![LOGO](./Resources/LOGO.jpeg)
 
 
 
-# Falcon
+# Falcon 🦅 
+*Easy – Fast – Done* :muscle:	
 
-Manage and control workflow app
-# Description
+Falcon is designed to help you manage your team's tasks and controls workflows in a better, easier way. It has an easy UI for managers and employees with a safe user login.
+- Creating new tasks and assign them to your team.
+- Overall view of all the tasks with smart filtering system.
+- Comments section for discussion on each task.
 
-Our product is design to help you control your team work better and easier.
-The product allows you as a manager to create new tasks and assigns it to your team, and for your workers, to get 
-all their tasks in the same place in an organize and easy way, so they will know exactly what to do and when .
 
 # Architecture
 
-| Frontend      | Backennd      | Datebase      |
+| Frontend      | Backend      | Datebase      |
 | ------------- | ------------- | ------------- |
 | HTML          | Python        | SQLite        |
 | CSS           | Django        |  
@@ -24,13 +25,13 @@ all their tasks in the same place in an organize and easy way, so they will know
 # Installation
 
 1. Install [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/)/[VMWare](https://www.vmware.com/) hypervisor.
-2. Clone [beyond-os-06-group-2](https://github.com/beyond-io/beyond-os-06-group-2) repository.
+2. Clone [falcon](https://github.com/beyond-io/falcon) repository.
    ```sh
-   https://github.com/redhat-beyond/beyond-os-06-group-2
+   https://github.com/redhat-beyond/falcon
    ```
 3. Open any terminal and navigate to the project directory.
 4. Run the `vagrant up` command.
-5. Use any browser and navigate to - `localhost:8000`.
+5. Use any browser and navigate to - [http://localhost:8000](http://localhost:8000).
 
 # The Team
-![OurTeam](https://user-images.githubusercontent.com/62508697/139729498-30e80549-55f3-41a1-8812-08e92ce03705.jpeg)
+![OurTeam](./Resources/OurTeam.jpeg)
