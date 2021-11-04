@@ -6,11 +6,11 @@ jobs:
         runs-on: ubuntu-20.04
         container: fedora:32
         steps:
-         - name: Install Pipenv and Git
-           run: dnf install -y pipenv git
-         - name: Checkout code
-           uses: actions/checkout@v2
-         - name: Setup environment
-           run: pipenv sync --dev
-         - name: Run Flake8
-           run: pipenv run flake8 --max-line-length 120
+            - name: Install Pipenv and Git
+              run: dnf install -y pipenv git
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Setup environment
+              run: pipenv sync --dev
+            - name: Run Flake8
+              run: pipenv run flake8 --max-line-length 120
