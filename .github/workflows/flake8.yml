@@ -1,26 +1,16 @@
-name: Extract Info
-on:
-  schedule:
-    # runs at 7 AM UTC
-    - cron:  '0 7 * * *'
-
+name: Flake8
+on: pull_request
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set up Python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-    - name: Install Environment & Dependencies
-      run: |
-        pip3 install flask Flask-SQLAlchemy Flask-Bootstrap SQLAlchemy flask_login flask_wtf pymysql pytest pytest-ordering requests pylint bs4 requests
-        export FLASK_APP=superx/app.py
-        export FLASK_ENV=development
-    - name: Run extractors
-      run: |
-        python ./superx/information_extractors/branch_info_extractor.py
-        python ./superx/information_extractors/item_info_extractor.py
+  flake8:
+      name: Check code with Flake8
+      runs-on: ubuntu-20.04
+      container: fedora:32
+      steps:
+       - name: Install Pipenv and Git
+         run: dnf install -y pipenv git
+       - name: Checkout code
+         uses: actions/checkout@v2
+       - name: Setup environment
+         run: pipenv sync --dev
+       - name: Run Flake8
+         run: pipenv run flake8 --max-line-length 120
