@@ -1,8 +1,6 @@
 
 ![LOGO](./Resources/LOGO.jpeg)
 
-
-
 # Falcon 🦅 
 *Easy – Fast – Done* :muscle:	
 
