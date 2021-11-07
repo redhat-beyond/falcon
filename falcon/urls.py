@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from falcon.views import login
+from falconapp.views import login
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login ,name='login')
+    path('', login, name='login')
 ]
