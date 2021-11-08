@@ -20,5 +20,5 @@ from falcon.views import login
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', login ,name='login')
+    path('', login, name='login')
 ]
