@@ -4,7 +4,6 @@ from django.db.models.manager import Manager
 
 class Task(models.Model):
     author = models.ForeignKey(Manager, on_delete=models.RESTRICT)
-    manager = models.ManyToOneField(Manager,  primary_key=True)
     title = models.CharField(max_length=50)
     name_task = models.CharField()
     about = models.TextField(blank=True)
