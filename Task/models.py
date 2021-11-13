@@ -1,4 +1,5 @@
 from django.db import models
+<<<<<<< HEAD
 from django.db.models.deletion import CASCADE
 from Manager.models import Manager
 
@@ -16,3 +17,7 @@ class Task(models.Model):
     
     
 
+=======
+
+# Create your models here.
+>>>>>>> working_branch
