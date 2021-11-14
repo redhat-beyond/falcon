@@ -19,13 +19,13 @@ class Migration(migrations.Migration):
             name='Task',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False,
-                 primary_key=True, serialize=False, unique=True)),
+                 primary_key=True, serialize=False)),
                 ('title', models.CharField(max_length=200)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('priority', enumchoicefield.fields.EnumChoiceField(
-                    default=tasks.models.Priority(1), enum_class=tasks.models.Priority, max_length=1)),
+                    default=tasks.models.Priority.LOW, enum_class=tasks.models.Priority, max_length=1)),
                 ('status', enumchoicefield.fields.EnumChoiceField(
-                    default=tasks.models.Status(1), enum_class=tasks.models.Status, max_length=1)),
+                    default=tasks.models.Status.BACKLOG, enum_class=tasks.models.Status, max_length=1)),
                 ('description', models.TextField(blank=True, null=True)),
             ],
         ),
@@ -33,7 +33,7 @@ class Migration(migrations.Migration):
             name='Comment',
             fields=[
                 ('id', models.UUIDField(default=uuid.uuid4, editable=False,
-                 primary_key=True, serialize=False, unique=True)),
+                 primary_key=True, serialize=False)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('description', models.TextField(blank=True, null=True)),
                 ('task_id', models.ForeignKey(

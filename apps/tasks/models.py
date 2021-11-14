@@ -18,8 +18,7 @@ class Priority(ChoiceEnum):
 
 
 class Task(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     title = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
@@ -33,9 +32,8 @@ class Task(models.Model):
 
 
 class Comment(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, unique=True,
-                          primary_key=True, editable=False)
-    # user_id = models.ForeignKey(Users)
+    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
+    # user_id = models.ForeignKey(User, on_delete=models.RESTRICT)
     task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
