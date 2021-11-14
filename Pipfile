@@ -9,6 +9,7 @@ pytest-django = "*"
 
 [packages]
 django = "*"
+django-enumchoicefield = "*"
 
 [requires]
 python_version = "3.8"
