@@ -34,6 +34,6 @@ Falcon is designed to help you manage your team's tasks and controls workflows i
 
 ![OurTeam](./static/img/OurTeam.jpeg)
 
-# Workflow Diagram
+# ER Diagram
   
   https://drawsql.app/idc-1/diagrams/falcon
