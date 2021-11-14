@@ -1,26 +1,23 @@
+![LOGO](./static/img/LOGO.jpeg)
 
-![LOGO](./Resources/LOGO.jpeg)
+# Falcon 🦅
 
-
-
-# Falcon 🦅 
-*Easy – Fast – Done* :muscle:	
+_Easy – Fast – Done_ :muscle:
 
 Falcon is designed to help you manage your team's tasks and controls workflows in a better, easier way. It has an easy UI for managers and employees with a safe user login.
+
 - Creating new tasks and assign them to your team.
 - Overall view of all the tasks with smart filtering system.
 - Comments section for discussion on each task.
 
-
 # Architecture
 
-| Frontend      | Backend      | Datebase      |
-| ------------- | ------------- | ------------- |
-| HTML          | Python        | SQLite        |
-| CSS           | Django        |  
-| JavaScript    | Vagrant       |
-| Bootstarp     |
-
+| Frontend   | Backend | Datebase |
+| ---------- | ------- | -------- |
+| HTML       | Python  | SQLite   |
+| CSS        | Django  |
+| JavaScript | Vagrant |
+| Bootstarp  |
 
 # Installation
 
@@ -34,4 +31,5 @@ Falcon is designed to help you manage your team's tasks and controls workflows i
 5. Use any browser and navigate to - [http://localhost:8000](http://localhost:8000).
 
 # The Team
-![OurTeam](./Resources/OurTeam.jpeg)
+
+![OurTeam](./static/img/OurTeam.jpeg)
