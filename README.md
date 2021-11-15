@@ -36,4 +36,4 @@ Falcon is designed to help you manage your team's tasks and controls workflows i
 
 # ERD
   
-drawSQL-export-2021-11-14_18_29.png
+![Diagram](./static/img/drowSQL.png)
