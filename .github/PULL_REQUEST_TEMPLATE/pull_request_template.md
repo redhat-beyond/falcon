@@ -4,6 +4,4 @@ Fixes #
 
 -
 -
--
-
-**Please mention somsone for code review**
+- **Please mention someone for code review**

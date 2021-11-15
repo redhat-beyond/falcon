@@ -8,4 +8,4 @@
 1.
 1.
 
-**Please mention somsone to take care of the issue**
+**Please mention someone to take care of the issue**
