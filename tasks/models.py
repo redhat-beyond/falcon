@@ -1,5 +1,6 @@
 from django.db import models
 from enumchoicefield import ChoiceEnum, EnumChoiceField
+from users.models import User
 
 
 class Status(ChoiceEnum):
@@ -19,7 +20,7 @@ class Task(models.Model):
     title = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     # created_by = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='created_tasks')
-    # assignee = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='assignee_tasks')
+    assignee = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='assignee_tasks')
     priority = EnumChoiceField(Priority, default=Priority.LOW, max_length=1)
     status = EnumChoiceField(Status, default=Status.BACKLOG, max_length=1)
     description = models.TextField(null=True, blank=True)
