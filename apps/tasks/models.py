@@ -1,7 +1,5 @@
 from django.db import models
-# from tasks.models import Users
 from enumchoicefield import ChoiceEnum, EnumChoiceField
-import uuid
 
 
 class Status(ChoiceEnum):
@@ -18,11 +16,10 @@ class Priority(ChoiceEnum):
 
 
 class Task(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     title = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
-    # created_by = models.ForeignKey(User, on_delete=models.RESTRICT)
-    # assignee = models.ForeignKey(User, on_delete=models.RESTRICT)
+    # created_by = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='created_tasks')
+    # assignee = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='assignee_tasks')
     priority = EnumChoiceField(Priority, default=Priority.LOW, max_length=1)
     status = EnumChoiceField(Status, default=Status.BACKLOG, max_length=1)
     description = models.TextField(null=True, blank=True)
@@ -32,8 +29,7 @@ class Task(models.Model):
 
 
 class Comment(models.Model):
-    id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
-    # user_id = models.ForeignKey(User, on_delete=models.RESTRICT)
+    # user_id = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='comments')
     task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
     created_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
