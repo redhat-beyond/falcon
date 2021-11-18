@@ -26,4 +26,4 @@ class User(models.Model):
     team_id = models.ForeignKey(Teams, on_delete=models.RESTRICT, related_name='users')
 
     def __str__(self) -> str:
-        return self.user
+        return self.first_name
