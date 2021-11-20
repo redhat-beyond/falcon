@@ -15,7 +15,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
                 ('description', models.TextField(blank=True, null=True)),
@@ -24,14 +25,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Task',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('created_date', models.DateTimeField(auto_now_add=True)),
-                ('priority', enumchoicefield.fields.EnumChoiceField(default=tasks.models.Priority(1),
-                                                                    enum_class=tasks.models.Priority, max_length=1)),
-                ('status',
-                 enumchoicefield.fields.EnumChoiceField(default=tasks.models.Status(1), enum_class=tasks.models.Status,
-                                                        max_length=1)),
+                ('priority', enumchoicefield.fields.EnumChoiceField(default=tasks.models.Priority.LOW,
+                                                                    enum_class=tasks.models.Priority,
+                                                                    max_length=1)),
+                ('status', enumchoicefield.fields.EnumChoiceField(default=tasks.models.Status.BACKLOG,
+                                                                  enum_class=tasks.models.Status,
+                                                                  max_length=1)),
                 ('description', models.TextField(blank=True, null=True)),
             ],
         ),

@@ -1,15 +1,16 @@
 from django.db import models
+from enumchoicefield import ChoiceEnum, EnumChoiceField
 from django.conf import settings
 
 
-# Enums
-class Roles(models.TextChoices):
-    EMPLOYEE = 'E', 'Employee'
-    MANAGER = 'M', 'Manager'
+# Enum
+class Role(ChoiceEnum):
+    EMPLOYEE = 'Employee',
+    MANAGER = 'Manager',
 
 
 # Create your models here.
-class Teams(models.Model):
+class Team(models.Model):
     name = models.CharField(max_length=255)
     description = models.CharField(max_length=500)
 
@@ -18,12 +19,14 @@ class Teams(models.Model):
 
 
 class User(models.Model):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     email = models.EmailField(max_length=255)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    role = models.CharField(max_length=1, choices=Roles.choices, default=Roles.EMPLOYEE)
-    team_id = models.ForeignKey(Teams, on_delete=models.RESTRICT, related_name='users')
+    role = EnumChoiceField(Role, default=Role.EMPLOYEE, max_length=1)
+    team_id = models.ForeignKey(
+        Team, on_delete=models.RESTRICT, related_name='users')
 
     def __str__(self) -> str:
         return self.first_name
