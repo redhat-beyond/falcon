@@ -27,13 +27,13 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='comment',
-            name='task_id',
+            name='task',
             field=models.ForeignKey(
                 on_delete=django.db.models.deletion.CASCADE, to='tasks.task'),
         ),
         migrations.AddField(
             model_name='comment',
-            name='user_id',
+            name='user',
             field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='comments',
                                     to='users.user'),
         ),
