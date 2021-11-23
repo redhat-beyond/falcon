@@ -28,6 +28,29 @@ class Task(models.Model):
     def __str__(self) -> str:
         return self.title
 
+    @classmethod
+    def filterByStatus(cls, status_filter):
+        if not isinstance(status_filter, Status):
+            raise ValueError
+        return cls.objects.filter(status=status_filter)
+
+    @classmethod
+    def filterByAssignee(cls, assignee_id):
+        if not isinstance(assignee_id, int):
+            raise TypeError
+        try:
+            user = User.objects.get(pk=assignee_id)
+        except User.DoesNotExist:
+            raise ValueError
+        return cls.objects.filter(assignee=user)
+
+    @classmethod
+    def filterByPriority(cls, priority_filter):
+        if not isinstance(priority_filter, Priority):
+            raise ValueError
+        print(priority_filter)
+        return cls.objects.filter(priority=priority_filter)
+
 
 class Comment(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='comments')
