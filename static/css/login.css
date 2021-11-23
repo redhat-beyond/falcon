@@ -1,88 +1,39 @@
+html,
 body {
-    font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    align-items: center;
-    flex-direction: column; 
-    justify-content: center;
-    padding: 10px;
+  height: 100%;
+}  
+    
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
 }
 
-#bootstrap-override {
-    background-color:rgb(228, 205, 187);
+
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
 }
 
-#logo {
-    max-height: 250px;
+.form-signin .checkbox {
+  font-weight: 400;
 }
 
-#loginContainer {
-    background-color: white;
-    border-radius: 7px;
-    padding: 20px;
-    width: 90%;
-    max-width: 300px;
-    position: relative;
-    padding: 0px;
-    box-shadow: 0 30px 60px 0 rgba(0,0,0,0.3);
-    text-align: center;
+.form-signin .form-floating:focus-within {
+  z-index: 2;
 }
 
-input[type=text]:placeholder {
-    color: #cccccc;
-  }
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
 
-input[type=submit] {
-    background-color: #a7404c;
-    border: none;
-    color: white;
-    padding: 4px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 13px;
-    width: 20%;
-    box-shadow: 0 10px 30px 0 rgba(82, 61, 61, 0.4);
-    border-radius: 5px 5px 5px 5px;
-    margin: 5px 20px 40px 20px;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  input[type=submit]:hover  {
-    background-color: #ef5230;
-  }
-  
-  input[type=text], input[type=password]{
-    background-color: #fcfcfc;
-    border: none;
-    color: #0d0d0d;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 10px;
-    margin: 5px;
-    width: 85%;
-    border: 2px solid #f6f6f6;
-    transition: all 0.5s ease-in-out;
-    border-radius: 5px;
-    outline: none;
-  }
-  
-  input[type=text]:focus, input[type=password]:focus {
-    background-color: #fff;
-    border-bottom: 2px solid #f15d5d;
-    outline: none;
-  }
-  
-  
-  /* CSS Fade animation */
-  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
-  
-  .fadeIn {
-    opacity:0;
-    animation:fadeIn ease-in 1;
-    animation-fill-mode:forwards;
-    animation-duration:1s;
-  }
-
-  
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
