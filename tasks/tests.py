@@ -1,3 +1,8 @@
-# from django.test import TestCase
+from tasks.models import Status, Priority, Task, Comment
 
-# Create your tests here.
+def test_update_status(status_1):
+    assert isinstance(status_1, Task)
+
+
+def test_update_priority(priority_1):
+    assert isinstance(priority_1, Task)
