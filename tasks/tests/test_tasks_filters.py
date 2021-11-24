@@ -69,12 +69,12 @@ class DBPrepare:
         return task
 
 
-@pytest.mark.django_db()
+@pytest.mark.django_db
 class TestTasksFilters:
     """
     Add test data to database
     """
-    @pytest.fixture()
+    @pytest.fixture
     def prepare_database(self):
         DBPrepare.create_example_team()
         manager = DBPrepare.create_example_manager("TestManager")
@@ -89,7 +89,7 @@ class TestTasksFilters:
     """
     def test_priority_filter(self, prepare_database):
         for priority in (Priority.LOW, Priority.HIGH, Priority.MEDIUM):
-            filtered_tasks = Task.filterByPriority(priority)
+            filtered_tasks = Task.filter_by_symbol(priority)
             assert isinstance(filtered_tasks, QuerySet)
             assert all(isinstance(task, Task) for task in filtered_tasks)
             assert len(filtered_tasks) == 5
@@ -100,13 +100,13 @@ class TestTasksFilters:
     """
     def test_invalid_priority_filter(self, prepare_database):
         with pytest.raises(ValueError):
-            Task.filterByPriority('INVALID')
+            Task.filter_by_symbol('INVALID')
 
     """
     Test filtering tasks by asignee id
     """
     def test_assignee_filter(self, prepare_database):
-        filtered_tasks = Task.filterByAssignee(2)
+        filtered_tasks = Task.filter_by_assignee(2)
         assert isinstance(filtered_tasks, QuerySet)
         assert all(isinstance(task, Task) for task in filtered_tasks)
         assert len(filtered_tasks) == 3
@@ -117,16 +117,16 @@ class TestTasksFilters:
     """
     def test_invalid_assignee_filter(self):
         with pytest.raises(ValueError):
-            Task.filterByAssignee(-2)
+            Task.filter_by_assignee(-2)
         with pytest.raises(TypeError):
-            Task.filterByAssignee('INVALID')
+            Task.filter_by_assignee('INVALID')
 
     """
     Test filtering tasks by status
     """
     def test_status_filter(self, prepare_database):
         for status in Status:
-            filtered_tasks = Task.filterByStatus(status)
+            filtered_tasks = Task.filter_by_status(status)
             assert isinstance(filtered_tasks, QuerySet)
             assert all(isinstance(task, Task) for task in filtered_tasks)
             assert len(filtered_tasks) == 5
@@ -137,4 +137,4 @@ class TestTasksFilters:
     """
     def test_invalid_status_filter(self, prepare_database):
         with pytest.raises(ValueError):
-            Task.filterByStatus('INVALID')
+            Task.filter_by_status('INVALID')
