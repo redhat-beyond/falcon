@@ -1,6 +1,6 @@
 from django.db import models
 from enumchoicefield import ChoiceEnum, EnumChoiceField
-from users.models import User
+from users.models import Role, User
 
 
 class Status(ChoiceEnum):
@@ -52,6 +52,29 @@ class Task(models.Model):
             raise ValueError
         print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
+
+    @classmethod
+    def create_task(cls, title, assignee, assigner, priority, status, description):
+        if not title or title == "":
+            raise ValueError("Must add title")
+        if not isinstance(priority, Priority):
+            raise ValueError("Must use Priority enum")
+        if not isinstance(status, Status):
+            raise ValueError("Must use Status enum")
+        assigner_role = assigner.role
+        assigner_team = assigner.team_id
+        assigne_team = assignee.team_id
+        if assigne_team != assigner_team:
+            raise ValueError("Manager can assign tasks only for his own employees")
+        if assigner_role != Role.MANAGER:
+            raise ValueError("User must be a manager to assign tasks")
+        task = Task.objects.create(title=title,
+                                   assignee=assignee,
+                                   created_by=assigner,
+                                   priority=priority,
+                                   status=status,
+                                   description=description)
+        return task
 
 
 class Comment(models.Model):
