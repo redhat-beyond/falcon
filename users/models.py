@@ -24,7 +24,7 @@ class User(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, primary_key=True)
     role = EnumChoiceField(Role, default=Role.EMPLOYEE, max_length=1)
     team = models.ForeignKey(
-        Team, on_delete=models.RESTRICT, related_name='users')
+        Team, on_delete=models.RESTRICT, related_name='team')
 
     @staticmethod
     def create_user(username, email, password, first_name, last_name, role, team):

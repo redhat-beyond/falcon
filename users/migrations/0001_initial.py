@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                                       to='auth.user')),
                 ('role', enumchoicefield.fields.EnumChoiceField(default=users.models.Role.EMPLOYEE,
                                                                 enum_class=users.models.Role, max_length=1)),
-                ('team', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='users',
+                ('team', models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='team',
                                            to='users.team')),
             ],
         ),
