@@ -32,8 +32,8 @@ class Task(models.Model):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.RESTRICT, related_name='comments')
+    appUser = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name='appUser')
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='task')
     title = models.CharField(max_length=200)

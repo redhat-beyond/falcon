@@ -33,8 +33,8 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='comment',
-            name='user',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='comments',
+            name='appUser',
+            field=models.ForeignKey(on_delete=django.db.models.deletion.RESTRICT, related_name='appUser',
                                     to='users.user'),
         ),
     ]
