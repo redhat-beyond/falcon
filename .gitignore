@@ -130,3 +130,9 @@ dmypy.json
 
 # Vagrant
 .vagrant
+
+# Pycharm
+.idea
+
+#nohup.out
+nohup.out

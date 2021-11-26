@@ -5,9 +5,11 @@ verify_ssl = true
 
 [dev-packages]
 flake8 = "*"
+pytest-django = "*"
 
 [packages]
 django = "*"
+django-enumchoicefield = "*"
 
 [requires]
 python_version = "3.8"
