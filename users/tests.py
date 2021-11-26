@@ -59,18 +59,22 @@ class TestUsers:
         with pytest.raises(Exception):
             User.create_user(
                 username="user1",
-                email="user1@redhat.com",
                 password="password",
+                first_name="first_name",
                 last_name="last_name",
                 role=Role.EMPLOYEE,
                 team=TestTeams.valid_team)
 
     def test_create_user_with_long_name(self):
+        longName = """ this is a very
+        long string if I had the
+        energy to type more and more ..."""
         with pytest.raises(Exception):
             User.create_user(
                 username="user1",
                 email="user1@redhat.com",
                 password="password",
+                first_name=longName,
                 last_name="last_name",
                 role=Role.EMPLOYEE,
                 team=TestTeams.valid_team)
