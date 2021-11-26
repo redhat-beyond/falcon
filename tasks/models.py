@@ -9,7 +9,6 @@ class Status(ChoiceEnum):
     DONE = 'Done',
 
 
-
 class Priority(ChoiceEnum):
     LOW = 'Low',
     MEDIUM = 'Medium',
@@ -27,7 +26,6 @@ class Task(models.Model):
     priority = EnumChoiceField(Priority, default=Priority.LOW, max_length=1)
     status = EnumChoiceField(Status, default=Status.BACKLOG, max_length=1)
     description = models.TextField(null=True, blank=True)
-
 
     def update_status(self, status):
         self.status = status
