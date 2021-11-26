@@ -19,8 +19,10 @@ class Priority(ChoiceEnum):
 class Task(models.Model):
     title = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
-    assignee = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='assigneeTasks')
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='createdTasks')
+    assignee = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name='assigneeTasks')
+    created_by = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name='createdTasks')
     priority = EnumChoiceField(Priority, default=Priority.LOW, max_length=1)
     status = EnumChoiceField(Status, default=Status.BACKLOG, max_length=1)
     description = models.TextField(null=True, blank=True)
@@ -30,8 +32,10 @@ class Task(models.Model):
 
 
 class Comment(models.Model):
-    user_id = models.ForeignKey(User, on_delete=models.RESTRICT, related_name='comments')
-    task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+    appUser = models.ForeignKey(
+        User, on_delete=models.RESTRICT, related_name='appUser')
+    task = models.ForeignKey(
+        Task, on_delete=models.CASCADE, related_name='task')
     title = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
