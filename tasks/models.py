@@ -28,14 +28,14 @@ class Task(models.Model):
     status = EnumChoiceField(Status, default=Status.BACKLOG, max_length=1)
     description = models.TextField(null=True, blank=True)
 
-    @classmethod
-    def update_status(task_id, status):
-        task_id.status = status
 
-    @classmethod
-    def update_priority(task_id, priority):
-        task_id.priority = priority
+    def update_status(self, status):
+        self.status = status
+        self.save()
 
+    def update_priority(self, priority):
+        self.priority = priority
+        self.save()
 
     def __str__(self) -> str:
         return self.title
