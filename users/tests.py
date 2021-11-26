@@ -78,3 +78,37 @@ class TestUsers:
                 last_name="last_name",
                 role=Role.EMPLOYEE,
                 team=TestTeams.valid_team)
+
+    @pytest.fixture
+    def example_team(self):
+        team = Team(name='a', description='b')
+        team.save()
+        return team
+
+    @pytest.fixture
+    def example_user_employee(self, example_team):
+        user = User.create_user('a', 'a@a.com', 'aaa', 'a', 'z', Role.MANAGER, example_team)
+        user.save()
+        return user
+
+    @pytest.fixture
+    def example_user_manager(self, example_team):
+        user = User.create_user('m', 'm@m.com', 'mmm', 'm', 'z', Role.MANAGER, example_team)
+        user.save()
+        return user
+
+    @pytest.mark.django_db
+    def test_check_is_employee_true(self, example_user_employee):
+        return User.is_employee(example_user_employee)
+
+    @pytest.mark.django_db
+    def test_check_is_employee_false(self, example_user_manager):
+        return not User.is_employee(example_user_manager)
+
+    @pytest.mark.django_db
+    def test_check_is_manager_true(self, example_user_manager):
+        return User.is_manager(example_user_manager)
+
+    @pytest.mark.django_db
+    def test_check_is_manager_false(self, example_user_employee):
+        return not User.is_manager(example_user_employee)

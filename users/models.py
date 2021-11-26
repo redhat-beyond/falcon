@@ -32,7 +32,7 @@ class User(models.Model):
                                                      password=password,
                                                      first_name=first_name,
                                                      last_name=last_name)
-        if(isinstance(django_user, DjangoUser)):
+        if isinstance(django_user, DjangoUser):
             user = User.objects.create(user=django_user,
                                        role=role,
                                        team=team)
@@ -45,3 +45,20 @@ class User(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+
+    def get_user_role(self):
+        return self.role
+
+    @staticmethod
+    def is_employee(user):
+        if user.get_user_role() == Role.EMPLOYEE:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def is_manager(user):
+        if user.get_user_role() == Role.MANAGER:
+            return True
+        else:
+            return False
