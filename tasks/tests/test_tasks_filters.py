@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User as DjangoUser
 from django.db.models.query import QuerySet
 import pytest
 from tasks.models import Priority, Task, Status
@@ -14,15 +13,13 @@ class DBPrepare:
     @staticmethod
     def create_example_employee(username):
         team = Team.objects.first()
-        django_user = DjangoUser.objects.create_user(username=username,
-                                                     email="example@gmail.com",
-                                                     password='xsdDS23',
-                                                     first_name="Test",
-                                                     last_name="Test")
-        employee = User.objects.create(user=django_user,
-                                       role=Role.EMPLOYEE,
-                                       team_id=team)
-        employee.save()
+        employee = User.create_user(username=username,
+                                    email="example@gmail.com",
+                                    password='xsdDS23',
+                                    first_name="Test",
+                                    last_name="Test",
+                                    role=Role.EMPLOYEE,
+                                    team=team)
         return employee
 
     """
@@ -31,15 +28,13 @@ class DBPrepare:
     @staticmethod
     def create_example_manager(username):
         team = Team.objects.first()
-        django_user = DjangoUser.objects.create_user(username=username,
-                                                     email="example@gmail.com",
-                                                     password='xsdDS23',
-                                                     first_name="Test",
-                                                     last_name="Test")
-        manager = User.objects.create(user=django_user,
-                                      role=Role.MANAGER,
-                                      team_id=team)
-        manager.save()
+        manager = User.create_user(username=username,
+                                   email="example@gmail.com",
+                                   password='xsdDS23',
+                                   first_name="Test",
+                                   last_name="Test",
+                                   role=Role.MANAGER,
+                                   team=team)
         return manager
 
     """
@@ -48,7 +43,6 @@ class DBPrepare:
     @staticmethod
     def create_example_team():
         team = Team.objects.create(name="TestTeam", description="Test Team")
-        team.save()
         return team
 
     """
@@ -65,7 +59,6 @@ class DBPrepare:
                                     status=status,
                                     priority=priority,
                                     description=description)
-        task.save()
         return task
 
 
