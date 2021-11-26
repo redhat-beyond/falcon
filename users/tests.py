@@ -1,5 +1,6 @@
 import pytest
 from users.models import Role, User, Team
+from django.contrib.auth.models import User as DjangoUser
 
 
 @pytest.mark.django_db
@@ -47,6 +48,12 @@ class TestUsers:
     def test_create_user(self, employee_1):
         assert isinstance(employee_1, User)
         assert User.objects.filter(user=employee_1.user).exists()
+
+    def test_delete_user(self, employee_1):
+        userId = employee_1.user.id
+        employee_1.delete()
+        assert not User.objects.filter(user=userId).exists()
+        assert not DjangoUser.objects.filter(pk=userId).exists()
 
     def test_create_user_without_email(self):
         with pytest.raises(Exception):
