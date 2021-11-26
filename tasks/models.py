@@ -53,6 +53,9 @@ class Task(models.Model):
         print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
 
+    def change_assignee(self, new_assignee):
+        self.assignee = new_assignee
+
 
 class Comment(models.Model):
     appUser = models.ForeignKey(
