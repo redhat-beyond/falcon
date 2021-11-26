@@ -46,19 +46,8 @@ class User(models.Model):
     def __str__(self) -> str:
         return self.user.username
 
-    def get_user_role(self):
-        return self.role
+    def is_employee(self):
+        return self.role == Role.EMPLOYEE
 
-    @staticmethod
-    def is_employee(user):
-        if user.get_user_role() == Role.EMPLOYEE:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def is_manager(user):
-        if user.get_user_role() == Role.MANAGER:
-            return True
-        else:
-            return False
+    def is_manager(self):
+        return self.role == Role.MANAGER
