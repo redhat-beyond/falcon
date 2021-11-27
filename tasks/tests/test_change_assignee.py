@@ -13,7 +13,7 @@ class TestChangeTaskAssignee:
         assert task.assignee == employee_1
         task.change_assignee(employee_2)
         assert task.assignee == employee_2
-    
+
     @pytest.mark.parametrize("invalid_input", ["INVALID VALUE", None, 2])
     def test_change_assignee_invalid_input(self, test_db, invalid_input):
         _, _, _, tasks = test_db
@@ -34,4 +34,3 @@ class TestChangeTaskAssignee:
         with pytest.raises(Exception):
             task.change_assignee(employee_2)
         assert task.assignee == employee_1
-
