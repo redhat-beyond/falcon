@@ -53,6 +53,14 @@ class Task(models.Model):
         print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
 
+    def update_status(self, status):
+        self.status = status
+        self.save()
+
+    def update_priority(self, priority):
+        self.priority = priority
+        self.save()
+
 
 class Comment(models.Model):
     appUser = models.ForeignKey(
