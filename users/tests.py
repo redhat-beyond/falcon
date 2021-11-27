@@ -81,14 +81,12 @@ class TestUsers:
 
     @pytest.fixture
     def example_team(self):
-        team = Team(name='a', description='b')
-        team.save()
+        team = Team.objects.create(name='a', description='b')
         return team
 
     @pytest.fixture
     def example_user_employee(self, example_team):
         user = User.create_user('a', 'a@a.com', 'aaa', 'a', 'z', Role.MANAGER, example_team)
-        user.save()
         return user
 
     @pytest.fixture
