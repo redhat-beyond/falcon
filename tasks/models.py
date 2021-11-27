@@ -54,6 +54,11 @@ class Task(models.Model):
         return cls.objects.filter(priority=priority_filter)
 
     def change_assignee(self, new_assignee):
+        prev_assignee = self.assignee
+        if new_assignee is None:
+            raise TypeError("Valid user must be provided")
+        if new_assignee.team != prev_assignee.team:
+            raise ValueError("The new assignee must be of the same team")
         self.assignee = new_assignee
 
 
