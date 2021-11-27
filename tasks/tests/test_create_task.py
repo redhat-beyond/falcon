@@ -1,8 +1,7 @@
 import pytest
 from tasks.models import Priority, Status, Task
 from users.models import User, Team, Role
-from django.contrib.auth.models import User as DjangoUser
-from django.db.transaction import TransactionManagementError 
+
 
 @pytest.mark.django_db
 class TestCreateTask:
@@ -44,12 +43,12 @@ class TestCreateTask:
     @pytest.fixture
     def employee(self, team):
         employee = User.create_user(username="TestEmployee",
-                                   email="example@gmail.com",
-                                   password='xsdDS23',
-                                   first_name='Test',
-                                   last_name='Test',
-                                   role=Role.EMPLOYEE,
-                                   team=team)
+                                    email="example@gmail.com",
+                                    password='xsdDS23',
+                                    first_name='Test',
+                                    last_name='Test',
+                                    role=Role.EMPLOYEE,
+                                    team=team)
         return employee
 
     """
@@ -58,12 +57,12 @@ class TestCreateTask:
     @pytest.fixture
     def employee_other_team(self, other_team):
         employee = User.create_user(username="TestEmployee",
-                                   email="example@gmail.com",
-                                   password='xsdDS23',
-                                   first_name='Test',
-                                   last_name='Test',
-                                   role=Role.EMPLOYEE,
-                                   team=other_team)
+                                    email="example@gmail.com",
+                                    password='xsdDS23',
+                                    first_name='Test',
+                                    last_name='Test',
+                                    role=Role.EMPLOYEE,
+                                    team=other_team)
         return employee
 
     """
