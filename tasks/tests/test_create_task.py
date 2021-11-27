@@ -2,7 +2,7 @@ import pytest
 from tasks.models import Priority, Status, Task
 from users.models import User, Team, Role
 from django.contrib.auth.models import User as DjangoUser
-
+from django.db.transaction import TransactionManagementError 
 
 @pytest.mark.django_db
 class TestCreateTask:
@@ -11,9 +11,8 @@ class TestCreateTask:
     """
     @pytest.fixture
     def team(self):
-        team = Team(name="TestTeam",
-                    description="This is a test team")
-        team.save()
+        team = Team.objects.create(name="TestTeam",
+                                   description="This is a test team")
         return team
 
     """
@@ -21,9 +20,8 @@ class TestCreateTask:
     """
     @pytest.fixture
     def other_team(self):
-        team = Team(name="TestOtherTeam",
-                    description="This is a test team")
-        team.save()
+        team = Team.objects.create(name="TestOtherTeam",
+                                   description="This is a test team")
         return team
 
     """
@@ -31,15 +29,13 @@ class TestCreateTask:
     """
     @pytest.fixture
     def manager(self, team):
-        django_user = DjangoUser.objects.create_user(username="TestManager",
-                                                     email="example@gmail.com",
-                                                     password='xsdDS23',
-                                                     first_name="Test",
-                                                     last_name="Test")
-        manager = User.objects.create(user=django_user,
-                                      role=Role.MANAGER,
-                                      team=team)
-        manager.save()
+        manager = User.create_user(username="TestManager",
+                                   email="example@gmail.com",
+                                   password='xsdDS23',
+                                   first_name='Test',
+                                   last_name='Test',
+                                   role=Role.MANAGER,
+                                   team=team)
         return manager
 
     """
@@ -47,15 +43,13 @@ class TestCreateTask:
     """
     @pytest.fixture
     def employee(self, team):
-        django_user = DjangoUser.objects.create_user(username="TestEmployee",
-                                                     email="example@gmail.com",
-                                                     password='xsdDS23',
-                                                     first_name="Test",
-                                                     last_name="Test")
-        employee = User.objects.create(user=django_user,
-                                       role=Role.EMPLOYEE,
-                                       team=team)
-        employee.save()
+        employee = User.create_user(username="TestEmployee",
+                                   email="example@gmail.com",
+                                   password='xsdDS23',
+                                   first_name='Test',
+                                   last_name='Test',
+                                   role=Role.EMPLOYEE,
+                                   team=team)
         return employee
 
     """
@@ -63,15 +57,13 @@ class TestCreateTask:
     """
     @pytest.fixture
     def employee_other_team(self, other_team):
-        django_user = DjangoUser.objects.create_user(username="TestEmployee",
-                                                     email="example@gmail.com",
-                                                     password='xsdDS23',
-                                                     first_name="Test",
-                                                     last_name="Test")
-        employee = User.objects.create(user=django_user,
-                                       role=Role.EMPLOYEE,
-                                       team=other_team)
-        employee.save()
+        employee = User.create_user(username="TestEmployee",
+                                   email="example@gmail.com",
+                                   password='xsdDS23',
+                                   first_name='Test',
+                                   last_name='Test',
+                                   role=Role.EMPLOYEE,
+                                   team=other_team)
         return employee
 
     """
@@ -80,7 +72,7 @@ class TestCreateTask:
     def test_add_task_to_db(self, manager, employee):
         Task.create_task(title="TestTask",
                          assignee=employee,
-                         assigner=manager,
+                         created_by=manager,
                          priority=Priority.CRITICAL,
                          status=Status.BACKLOG,
                          description="This is a test task")
@@ -92,10 +84,10 @@ class TestCreateTask:
     """
     def test_assigned_by_non_manager(self, manager, employee):
         assert employee.role != Role.MANAGER
-        with pytest.raises(ValueError):
+        with pytest.raises(Exception):
             Task.create_task(title="TestTask",
                              assignee=manager,
-                             assigner=employee,
+                             created_by=employee,
                              priority=Priority.CRITICAL,
                              status=Status.BACKLOG,
                              description="This is a test task")
@@ -105,10 +97,10 @@ class TestCreateTask:
     Test that title is required when creating a task.
     """
     def test_no_title(self, manager, employee):
-        with pytest.raises(ValueError):
+        with pytest.raises(Exception):
             Task.create_task(title="",
                              assignee=employee,
-                             assigner=manager,
+                             created_by=manager,
                              priority=Priority.CRITICAL,
                              status=Status.BACKLOG,
                              description="This is a test task")
@@ -118,10 +110,10 @@ class TestCreateTask:
     Test that priority must be a valid enum value
     """
     def test_invalid_priority(self, manager, employee):
-        with pytest.raises(ValueError):
+        with pytest.raises(Exception):
             Task.create_task(title="TestTask",
                              assignee=employee,
-                             assigner=manager,
+                             created_by=manager,
                              priority='INVALID',
                              status=Status.BACKLOG,
                              description="This is a test task")
@@ -131,10 +123,10 @@ class TestCreateTask:
     Test that status must be a valid enum value
     """
     def test_invalid_status(self, manager, employee):
-        with pytest.raises(ValueError):
+        with pytest.raises(Exception):
             Task.create_task(title="TestTask",
                              assignee=employee,
-                             assigner=manager,
+                             created_by=manager,
                              priority=Priority.CRITICAL,
                              status='INVALID',
                              description="This is a test task")
@@ -144,10 +136,10 @@ class TestCreateTask:
     Test that manager cannot assign task to other teams employees
     """
     def test_assign_other_team(self, manager, employee_other_team):
-        with pytest.raises(ValueError):
+        with pytest.raises(Exception):
             Task.create_task(title="TestTask",
                              assignee=employee_other_team,
-                             assigner=manager,
+                             created_by=manager,
                              priority=Priority.CRITICAL,
                              status=Status.BACKLOG,
                              description="This is a test task")
