@@ -54,6 +54,8 @@ class Task(models.Model):
         return cls.objects.filter(priority=priority_filter)
 
     def change_assignee(self, new_assignee):
+        if new_assignee not in User.objects.all():
+            raise Exception
         prev_assignee = self.assignee
         if new_assignee is None:
             raise TypeError("Valid user must be provided")

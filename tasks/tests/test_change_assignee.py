@@ -1,6 +1,7 @@
 import pytest
 from tasks.models import Task
-from users.models import Team, User
+from users.models import Team, User, Role
+from django.contrib.auth.models import User as DjangoUser
 
 
 @pytest.mark.django_db
@@ -34,3 +35,20 @@ class TestChangeTaskAssignee:
         with pytest.raises(Exception):
             task.change_assignee(employee_2)
         assert task.assignee == employee_1
+
+    @pytest.fixture
+    def out_db_user(self, test_db):
+        team = test_db[0][0]
+        django_user = DjangoUser.objects.create(username="testtest",
+                                                password="ssdalhSFDAJ23!",
+                                                email="example@redhat.com",
+                                                first_name="test",
+                                                last_name="test")
+        user = User(user=django_user, role=Role.EMPLOYEE, team=team)
+        return user
+
+    def test_change_assignee_not_db_user(self, test_db, out_db_user):
+        tasks = test_db[3]
+        task = tasks[0]
+        with pytest.raises(Exception):
+            task.change_assignee(out_db_user)
