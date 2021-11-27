@@ -86,7 +86,7 @@ class TestUsers:
 
     @pytest.fixture
     def example_user_employee(self, example_team):
-        user = User.create_user('a', 'a@a.com', 'aaa', 'a', 'z', Role.MANAGER, example_team)
+        user = User.create_user('a', 'a@a.com', 'aaa', 'a', 'z', Role.EMPLOYEE, example_team)
         return user
 
     @pytest.fixture
@@ -96,17 +96,11 @@ class TestUsers:
         return user
 
     @pytest.mark.django_db
-    def test_check_is_employee_true(self, example_user_employee):
-        return User.is_employee(example_user_employee)
+    def test_check_is_employee(self, example_user_employee, example_user_manager):
+        assert User.is_employee(example_user_employee) is True
+        assert User.is_employee(example_user_manager) is False
 
     @pytest.mark.django_db
-    def test_check_is_employee_false(self, example_user_manager):
-        return not User.is_employee(example_user_manager)
-
-    @pytest.mark.django_db
-    def test_check_is_manager_true(self, example_user_manager):
-        return User.is_manager(example_user_manager)
-
-    @pytest.mark.django_db
-    def test_check_is_manager_false(self, example_user_employee):
-        return not User.is_manager(example_user_employee)
+    def test_check_is_manager(self, example_user_employee, example_user_manager):
+        assert User.is_manager(example_user_employee) is False
+        assert User.is_manager(example_user_manager) is True
