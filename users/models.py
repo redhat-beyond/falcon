@@ -11,7 +11,7 @@ class Role(ChoiceEnum):
 
 # Create your models here.
 class Team(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False, default=None)
     description = models.CharField(max_length=500)
 
     def __str__(self) -> str:
@@ -32,7 +32,7 @@ class User(models.Model):
                                                      password=password,
                                                      first_name=first_name,
                                                      last_name=last_name)
-        if(isinstance(django_user, DjangoUser)):
+        if isinstance(django_user, DjangoUser):
             user = User.objects.create(user=django_user,
                                        role=role,
                                        team=team)
@@ -45,3 +45,9 @@ class User(models.Model):
 
     def __str__(self) -> str:
         return self.user.username
+
+    def is_employee(self):
+        return self.role == Role.EMPLOYEE
+
+    def is_manager(self):
+        return self.role == Role.MANAGER

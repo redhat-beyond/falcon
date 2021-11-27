@@ -17,7 +17,7 @@ class Priority(ChoiceEnum):
 
 
 class Task(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=False, default=None)
     created_date = models.DateTimeField(auto_now_add=True)
     assignee = models.ForeignKey(
         User, on_delete=models.RESTRICT, related_name='assigneeTasks')
@@ -67,7 +67,7 @@ class Comment(models.Model):
         User, on_delete=models.RESTRICT, related_name='appUser')
     task = models.ForeignKey(
         Task, on_delete=models.CASCADE, related_name='task')
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=False, default=None)
     created_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField(null=True, blank=True)
 
