@@ -1,7 +1,6 @@
 import pytest
 from users.models import User, Team, Role
 from tasks.models import Task, Priority, Status
-from falcon.test_support import Random
 
 
 @pytest.fixture
@@ -29,14 +28,23 @@ def users(teams):
     users_counter = 0
     for i in range(3):
         for team in (team1, team2):
-            print()
-            employee = User.create_user(f"User{users_counter}", Random.email(), "ssSSAD231!@",
-                                        Random.string(5), Random.string(5), Role.EMPLOYEE, team)
+            employee = User.create_user(username=f"User{users_counter}",
+                                        email=f"User{users_counter}@redhat.com",
+                                        password="ssSSAD231!@",
+                                        first_name=f"User{users_counter}",
+                                        last_name=f"User{users_counter}",
+                                        role=Role.EMPLOYEE,
+                                        team=team)
             employees += [employee]
             users_counter += 1
     for i, team in enumerate((team1, team2, team3)):
-        manager = User.create_user(f"Manager{i}", Random.email(), "ssSSAD231!@",
-                                   Random.string(5), Random.string(5), Role.MANAGER, team)
+        manager = User.create_user(username=f"Manager{i}",
+                                   email=f"Manager{i}@redhat.com",
+                                   password="ssSSAD231!@",
+                                   first_name=f"Manager{i}",
+                                   last_name=f"Manager{i}",
+                                   role=Role.MANAGER,
+                                   team=team)
         managers += [manager]
     return teams, tuple(employees), tuple(managers)
 
