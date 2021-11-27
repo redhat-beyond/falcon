@@ -11,7 +11,7 @@ class Role(ChoiceEnum):
 
 # Create your models here.
 class Team(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, blank=False, default=None)
     description = models.CharField(max_length=500)
 
     def __str__(self) -> str:

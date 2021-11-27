@@ -23,7 +23,7 @@ class TestTeams:
 
     def test_create_team_without_title(self):
         with pytest.raises(Exception):
-            Team.objects.create('', "Best team ever")
+            Team.objects.create(description="Best team ever")
 
 
 @pytest.mark.django_db
