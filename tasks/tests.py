@@ -48,8 +48,8 @@ class TestTasks:
 
     def test_update_status(self, task1):
         task1.update_status(Status.DONE)
-        assert task1.status == Status.DONE
+        assert Task.objects.get(pk=task1.id).status == Status.DONE
 
     def test_update_priority(self, task1):
         task1.update_priority(Priority.LOW)
-        assert task1.priority == Priority.LOW
+        assert Task.objects.get(pk=task1.id).priority == Priority.LOW
