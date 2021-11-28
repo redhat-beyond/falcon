@@ -63,6 +63,14 @@ class Task(models.Model):
             raise ValueError("The new assignee must be of the same team")
         self.assignee = new_assignee
 
+    def update_status(self, status):
+        self.status = status
+        self.save()
+
+    def update_priority(self, priority):
+        self.priority = priority
+        self.save()
+
 
 class Comment(models.Model):
     appUser = models.ForeignKey(
