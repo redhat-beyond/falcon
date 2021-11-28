@@ -10,6 +10,7 @@ pytest-django = "*"
 [packages]
 django = "*"
 django-enumchoicefield = "*"
+django-crispy-forms = "*"
 
 [requires]
 python_version = "3.8"
