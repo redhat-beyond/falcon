@@ -88,7 +88,7 @@ class TestCreateTask:
                                 "test_assign_other_team",
                             ]
                         )
-    def test_invalid_input(self, request, title, assignee, assigner, priority, status, description, length):
+    def test_create_task(self, request, title, assignee, assigner, priority, status, description, length):
         assignee = request.getfixturevalue(assignee)
         created_by = request.getfixturevalue(assigner)
         try:
