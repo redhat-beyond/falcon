@@ -8,13 +8,10 @@ def teams():
     """
     Adds teams to DB
     """
-    team1 = Team.objects.create(name="Team1",
-                                description="This is a test team")
-    team2 = Team.objects.create(name="Team2",
-                                description="This is a test team")
-    team3 = Team.objects.create(name="Team3",
-                                description="This is a test team")
-    return team1, team2, team3
+
+    return tuple(Team.objects.create(name=f"Team{i}",
+                                     description="This is a test team")
+                 for i in range(3))
 
 
 @pytest.fixture
@@ -35,7 +32,7 @@ def users(teams):
                                         last_name=f"User{users_counter}",
                                         role=Role.EMPLOYEE,
                                         team=team)
-            employees += [employee]
+            employees.append(employee)
             users_counter += 1
     for i, team in enumerate((team1, team2, team3)):
         manager = User.create_user(username=f"Manager{i}",
@@ -65,7 +62,7 @@ def tasks(users):
                                            priority=Priority.LOW,
                                            status=Status.BACKLOG,
                                            description="Test task")
-                tasks += [task]
+                tasks.append(task)
         return teams, employees, managers, tuple(tasks)
 
 
