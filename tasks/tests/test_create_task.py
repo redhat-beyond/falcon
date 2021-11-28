@@ -65,81 +65,39 @@ class TestCreateTask:
                                     team=other_team)
         return employee
 
-    """
-    Test add new task
-    """
-    def test_add_task_to_db(self, manager, employee):
-        Task.create_task(title="TestTask",
-                         assignee=employee,
-                         created_by=manager,
-                         priority=Priority.CRITICAL,
-                         status=Status.BACKLOG,
-                         description="This is a test task")
-        assert len(Task.objects.all()) == 1
-
-    """
-    Test that a user who is not manager cannot assign task to other
-    teams employees.
-    """
-    def test_assigned_by_non_manager(self, manager, employee):
-        assert employee.role != Role.MANAGER
-        with pytest.raises(Exception):
-            Task.create_task(title="TestTask",
-                             assignee=manager,
-                             created_by=employee,
-                             priority=Priority.CRITICAL,
-                             status=Status.BACKLOG,
-                             description="This is a test task")
-        assert len(Task.objects.all()) == 0
-
-    """
-    Test that title is required when creating a task.
-    """
-    def test_no_title(self, manager, employee):
-        with pytest.raises(Exception):
-            Task.create_task(title="",
-                             assignee=employee,
-                             created_by=manager,
-                             priority=Priority.CRITICAL,
-                             status=Status.BACKLOG,
-                             description="This is a test task")
-        assert len(Task.objects.all()) == 0
-
-    """
-    Test that priority must be a valid enum value
-    """
-    def test_invalid_priority(self, manager, employee):
-        with pytest.raises(Exception):
-            Task.create_task(title="TestTask",
-                             assignee=employee,
-                             created_by=manager,
-                             priority='INVALID',
-                             status=Status.BACKLOG,
-                             description="This is a test task")
-        assert len(Task.objects.all()) == 0
-
-    """
-    Test that status must be a valid enum value
-    """
-    def test_invalid_status(self, manager, employee):
-        with pytest.raises(Exception):
-            Task.create_task(title="TestTask",
-                             assignee=employee,
-                             created_by=manager,
-                             priority=Priority.CRITICAL,
-                             status='INVALID',
-                             description="This is a test task")
-        assert len(Task.objects.all()) == 0
-
-    """
-    Test that manager cannot assign task to other teams employees
-    """
-    def test_assign_other_team(self, manager, employee_other_team):
-        with pytest.raises(Exception):
-            Task.create_task(title="TestTask",
-                             assignee=employee_other_team,
-                             created_by=manager,
-                             priority=Priority.CRITICAL,
-                             status=Status.BACKLOG,
-                             description="This is a test task")
-        assert len(Task.objects.all()) == 0
+    @pytest.mark.parametrize('title, assignee, assigner, priority, status, description, length', [
+                            ('TestTask', 'employee', 'manager', Priority.CRITICAL, Status.BACKLOG,
+                             'This is description', 1),
+                            ('TestTask', 'manager', 'employee', Priority.CRITICAL, Status.BACKLOG,
+                             'This is description', 0),
+                            ('', 'employee', 'manager', Priority.CRITICAL, Status.BACKLOG,
+                             'This is description', 0),
+                            ('TestTask', 'employee', 'manager', 'INVALID', Status.BACKLOG,
+                             'This is description', 0),
+                            ('TestTask', 'employee', 'manager', Priority.CRITICAL, 'INVALID',
+                             'This is description', 0),
+                            ('TestTask', 'employee_other_team', 'manager', Priority.CRITICAL, Status.BACKLOG,
+                             'This is description', 0),
+                        ],
+                            ids=[
+                                "test_add_task_to_db",
+                                "test_assigned_by_non_manager",
+                                "test_no_title",
+                                "test_invalid_priority",
+                                "test_invalid_status",
+                                "test_assign_other_team",
+                            ]
+                        )
+    def test_invalid_input(self, request, title, assignee, assigner, priority, status, description, length):
+        assignee = request.getfixturevalue(assignee)
+        created_by = request.getfixturevalue(assigner)
+        try:
+            Task.create_task(title=title,
+                             assignee=assignee,
+                             created_by=created_by,
+                             priority=priority,
+                             status=status,
+                             description=description)
+        except ValueError:
+            pass
+        assert len(Task.objects.all()) == length
