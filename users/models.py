@@ -1,6 +1,7 @@
 from django.db import models
 from enumchoicefield import ChoiceEnum, EnumChoiceField
 from django.contrib.auth.models import User as DjangoUser
+from django.core.validators import validate_email
 
 
 # Enum
@@ -27,6 +28,11 @@ class User(models.Model):
 
     @staticmethod
     def create_user(username, email, password, first_name, last_name, role, team):
+
+        User.checkValidName(first_name)
+        User.checkValidName(last_name)
+        validate_email(email)
+
         django_user = DjangoUser.objects.create_user(username=username,
                                                      email=email,
                                                      password=password,
@@ -39,6 +45,11 @@ class User(models.Model):
             return user
         else:
             raise Exception("Error creating user")
+
+    @staticmethod
+    def checkValidName(string):
+        if(len(string) > 30 or not string.isalpha()):
+            raise ValueError
 
     def delete(self, *args, **kwargs):
         self.user.delete()
