@@ -26,7 +26,7 @@ class TestChangeTaskAssignee:
 
     def test_change_assignee_other_team(self, test_db):
         teams = Team.objects.all()
-        assert len(teams) > 0
+        assert len(teams) >= 2
         team_1 = teams[0]
         team_2 = teams[1]
         employee_1 = User.objects.filter(team=team_1).first()
@@ -48,7 +48,6 @@ class TestChangeTaskAssignee:
         return user
 
     def test_change_assignee_not_db_user(self, test_db, out_db_user):
-        tasks = test_db[3]
-        task = tasks[0]
+        task = test_db[3][0]
         with pytest.raises(Exception):
             task.change_assignee(out_db_user)
