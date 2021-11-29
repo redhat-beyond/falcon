@@ -1,6 +1,6 @@
-from django.db import models
+from django.db import models, transaction
 from enumchoicefield import ChoiceEnum, EnumChoiceField
-from users.models import User
+from users.models import Role, User
 
 
 class Status(ChoiceEnum):
@@ -52,6 +52,26 @@ class Task(models.Model):
             raise ValueError
         print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
+
+    @classmethod
+    @transaction.atomic
+    def create_task(cls, title, assignee, created_by, priority, status, description):
+        if title == "":
+            raise ValueError("Title must contain at lease one character")
+        assigner_role = created_by.role
+        assigner_team = created_by.team
+        assigne_team = assignee.team
+        if assigne_team != assigner_team:
+            raise ValueError("Manager can assign tasks only for his own employees")
+        if assigner_role != Role.MANAGER:
+            raise ValueError("User must be a manager to assign tasks")
+        task = Task.objects.create(title=title,
+                                   assignee=assignee,
+                                   created_by=created_by,
+                                   priority=priority,
+                                   status=status,
+                                   description=description)
+        return task
 
     def update_status(self, status):
         self.status = status
