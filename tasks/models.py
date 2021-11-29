@@ -53,6 +53,16 @@ class Task(models.Model):
         print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
 
+    def change_assignee(self, new_assignee):
+        if new_assignee not in User.objects.all():
+            raise Exception
+        prev_assignee = self.assignee
+        if new_assignee is None:
+            raise TypeError("Valid user must be provided")
+        if new_assignee.team != prev_assignee.team:
+            raise ValueError("The new assignee must be of the same team")
+        self.assignee = new_assignee
+
     @classmethod
     @transaction.atomic
     def create_task(cls, title, assignee, created_by, priority, status, description):
