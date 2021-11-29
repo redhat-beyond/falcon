@@ -1,5 +1,8 @@
 from django.shortcuts import render
-
+from tasks.models import Task
 
 def homepage(request):
-    return render(request, 'homepage.html')
+    context = {
+		'tasks':Task.objects.all()
+	}
+    return render(request, 'homepage.html', context)

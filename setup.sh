@@ -7,6 +7,7 @@ sudo -n dnf install -y pipenv
 cd /vagrant
 # Install dependencies with Pipenv
 pipenv sync --dev
+pipenv run pip install django-crispy-forms 
 # Run database migrations 
 pipenv run python manage.py migrate
 # run our app. Nohup and “&” are used to let the setup script finish
