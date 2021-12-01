@@ -1,15 +1,3 @@
 {% extends "base.html" %}
 {% block content %}
-    {% for task in tasks %}
-       <article class="media content-section">
-        <div class="media_body">
-            <div class="article_metadata">
-                <a class="mr-2" href="#">{{ task.assigneeTasks }}</a>
-                <small class="text-muted">{{ task.created_date|date:"F d, Y" }}</small>
-            </div>
-            <h3><a class="article_title" href="#">{{ task.title }}</a></h3>
-            <p class="article-content">{{ task.description }}</p>
-        </div>
-    </article>
-    {% endfor %}
 {% endblock content %}
