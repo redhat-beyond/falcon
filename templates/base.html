@@ -32,10 +32,8 @@
             {% if user.is_authenticated %}
               {% if user.Role == Manager %}
                 <a class="nav-item nav-link" href="#">New Task</a>
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-              {% else %}
-                <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
               {% endif %}
+		 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             {% else %}
 	          <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             {% endif %}
