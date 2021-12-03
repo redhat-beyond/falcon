@@ -1,6 +1,6 @@
 from django.db import models, transaction
 from enumchoicefield import ChoiceEnum, EnumChoiceField
-from users.models import Role, User
+from users.models import Role, Team, User
 
 
 class Status(ChoiceEnum):
@@ -50,8 +50,13 @@ class Task(models.Model):
     def filter_by_symbol(cls, priority_filter):
         if not isinstance(priority_filter, Priority):
             raise ValueError
-        print(priority_filter)
         return cls.objects.filter(priority=priority_filter)
+
+    @classmethod
+    def filter_by_team(cls, team_filter):
+        if not isinstance(team_filter, Team):
+            raise ValueError("A valid team must be provided")
+        return cls.objects.filter(assignee__team=team_filter)
 
     def change_assignee(self, new_assignee):
         if new_assignee not in User.objects.all():

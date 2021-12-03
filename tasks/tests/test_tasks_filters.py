@@ -131,3 +131,23 @@ class TestTasksFilters:
     def test_invalid_status_filter(self, prepare_database):
         with pytest.raises(ValueError):
             Task.filter_by_status('INVALID')
+
+    """
+    Test filtering by team
+    """
+    def test_team_filter(self, test_db):
+        team = test_db[0][0]
+        filtered_tasks = Task.filter_by_team(team)
+        assert isinstance(team, Team)
+        assert isinstance(filtered_tasks, QuerySet)
+        assert len(filtered_tasks) > 0
+        assert all(isinstance(task, Task) for task in filtered_tasks)
+        assert all(task.assignee.team == team for task in filtered_tasks)
+
+    """
+    Test that it is impossible to filter using invalid value
+    """
+    @pytest.mark.parametrize("invalid_input", ["INVALID VALUE", None, 2])
+    def test_invalid_team_filter(self, invalid_input):
+        with pytest.raises(Exception):
+            Team.filter_by_team(invalid_input)
