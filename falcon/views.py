@@ -9,6 +9,6 @@ def homepage(request):
 
     if(request.user.is_authenticated):
         user = User.objects.get(user=request.user)
-        return render(request, 'base.html', {'user': user})
+        return render(request, 'homepage.html', {'user': user})
 
-    return render(request, 'base.html')
+    return render(request, 'homepage.html')

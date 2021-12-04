@@ -18,12 +18,13 @@
       </div>
       <!-- Navbar Right Side -->
       <div class="navbar-nav">
-        {% if user.user.is_authenticated %} {% if user.is_manager %}
-        <a class="nav-item nav-link" href="#">New Task</a>
-        {% endif %}
-        <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+        {% if user.user.is_authenticated %}
+            {% if user.is_manager %}
+                <a class="nav-item nav-link" href="#">New Task</a>
+            {% endif %}
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
         {% else %}
-        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
         {% endif %}
       </div>
     </div>
