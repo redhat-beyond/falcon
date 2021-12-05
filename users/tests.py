@@ -25,6 +25,14 @@ class TestTeams:
         with pytest.raises(Exception):
             Team.objects.create(description="Best team ever")
 
+    def test_create_teams_with_same_name(self):
+        assert len(Team.objects.all()) == 0
+        Team.objects.create(name="Team1", description="This team will be created")
+        assert len(Team.objects.all()) == 1
+        with pytest.raises(Exception):
+            Team.objects.create(name="Team1", description="This team will be created")
+            assert len(Team.objects.all()) == 1, "Team1 was created twice"
+
 
 @pytest.mark.django_db
 class TestUsers:
