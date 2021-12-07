@@ -55,7 +55,7 @@ class Task(models.Model):
     @classmethod
     def filter_by_team(cls, team_filter):
         if not isinstance(team_filter, Team):
-            raise ValueError("A valid team must be provided")
+            raise TypeError("A valid team must be provided")
         return cls.objects.filter(assignee__team=team_filter)
 
     def change_assignee(self, new_assignee):
