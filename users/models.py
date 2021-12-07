@@ -29,8 +29,8 @@ class User(models.Model):
     @staticmethod
     def create_user(username, email, password, first_name, last_name, role, team):
 
-        User.checkValidName(first_name)
-        User.checkValidName(last_name)
+        User.check_valid_name(first_name)
+        User.check_valid_name(last_name)
         validate_email(email)
 
         django_user = DjangoUser.objects.create_user(username=username,
@@ -47,7 +47,7 @@ class User(models.Model):
             raise Exception("Error creating user")
 
     @staticmethod
-    def checkValidName(string):
+    def check_valid_name(string):
         if(len(string) > 30 or not string.isalpha()):
             raise ValueError
 

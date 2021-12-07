@@ -20,7 +20,7 @@ class TestUsers:
         assert not User.objects.filter(user=userId).exists()
         assert not DjangoUser.objects.filter(pk=userId).exists()
 
-    failToCreateParams = [
+    fail_to_create_params = [
         ('user1', 'password', '', 'first_name', 'last_name', Role.EMPLOYEE, team),
         ('user1', 'password', 'user1@redhat.com', Random.alphaOnly(50), 'lastName', Role.EMPLOYEE, team),
         ('user1', 'password', 'user1@redhat.com', 'firstName', 'lastName', Role.EMPLOYEE, team),
@@ -28,7 +28,7 @@ class TestUsers:
         ('user1', 'password', '', 'firstName', 'last@Name', Role.EMPLOYEE, team)
         ]
 
-    @pytest.mark.parametrize('username, password, email, first_name, last_name, role, team', failToCreateParams,
+    @pytest.mark.parametrize('username, password, email, first_name, last_name, role, team', fail_to_create_params,
                              ids=["test_create_user_without_email",
                                   "test_create_user_with_long_first_name",
                                   "test_create_user_with_not_valid_email",
