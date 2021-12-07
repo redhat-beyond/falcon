@@ -30,24 +30,24 @@ def users(teams):
     managers = []
     users_counter = 0
     for i in range(3):
-        suffix = Random.alphaOnly(i)
+        suffix = Random.alpha_only(i)
         for team in (team1, team2):
             employee = User.create_user(username=f"User{users_counter}",
                                         email=f"User{users_counter}{DEFAULT_MAIL_EXTENSION}",
                                         password=DEFAULT_VALID_PASSWORD,
                                         first_name=f"firstName{suffix}",
-                                        last_name=f"lasName{suffix}",
+                                        last_name=f"lastName{suffix}",
                                         role=Role.EMPLOYEE,
                                         team=team)
             employees.append(employee)
             users_counter += 1
     for i, team in enumerate((team1, team2, team3)):
-        suffix = Random.alphaOnly(i)
+        suffix = Random.alpha_only(i)
         manager = User.create_user(username=f"Manager{i}",
                                    email=f"Manager{i}{DEFAULT_MAIL_EXTENSION}",
                                    password=DEFAULT_VALID_PASSWORD,
                                    first_name=f"firstName{suffix}",
-                                   last_name=f"lasName{suffix}",
+                                   last_name=f"lastName{suffix}",
                                    role=Role.MANAGER,
                                    team=team)
         managers.append(manager)
@@ -92,7 +92,9 @@ def test_db(tasks):
 
 @pytest.fixture
 def valid_teams():
-    return [Team.objects.create(name=f"Team{index}", description="Best team ever") for index in range(1, 4)]
+    return [Team.objects.create(name="Team HR", description="Human Resources"),
+            Team.objects.create(name="Team R&D", description="Research and development"),
+            Team.objects.create(name="Team QA", description="Quality Assurance")]
 
 
 @pytest.fixture

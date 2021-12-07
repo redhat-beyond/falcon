@@ -22,7 +22,7 @@ class TestUsers:
 
     fail_to_create_params = [
         ('user1', 'password', '', 'first_name', 'last_name', Role.EMPLOYEE, team),
-        ('user1', 'password', 'user1@redhat.com', Random.alphaOnly(50), 'lastName', Role.EMPLOYEE, team),
+        ('user1', 'password', 'user1@redhat.com', Random.alpha_only(50), 'lastName', Role.EMPLOYEE, team),
         ('user1', 'password', 'user1@redhat.com', 'firstName', 'lastName', Role.EMPLOYEE, team),
         ('user1', 'password', 'aaaaaa', 'first@Name', 'lastName', Role.EMPLOYEE, team),
         ('user1', 'password', '', 'firstName', 'last@Name', Role.EMPLOYEE, team)
