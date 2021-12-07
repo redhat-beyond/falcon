@@ -35,8 +35,7 @@ class TestUsers:
                                   "test_create_user_with_special_chars_first_name",
                                   "test_create_user_with_special_chars_last_name"]
                              )
-    def test_create_user_without_email(self, username, password, email,
-                                       first_name, last_name, role, team):
+    def test_create_user_with_invalid_params(self, username, password, email, first_name, last_name, role, team):
         with pytest.raises(Exception):
             User.create_user(username, email, password, first_name,
                              last_name, role, team)
