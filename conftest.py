@@ -35,20 +35,19 @@ def users(teams):
             employee = User.create_user(username=f"User{users_counter}",
                                         email=f"User{users_counter}{DEFAULT_MAIL_EXTENSION}",
                                         password=DEFAULT_VALID_PASSWORD,
-                                        first_name=f"User{suffix}",
-                                        last_name=f"User{suffix}",
+                                        first_name=f"firstName{suffix}",
+                                        last_name=f"lasName{suffix}",
                                         role=Role.EMPLOYEE,
                                         team=team)
             employees.append(employee)
             users_counter += 1
     for i, team in enumerate((team1, team2, team3)):
         suffix = Random.alphaOnly(i)
-        print(suffix)
         manager = User.create_user(username=f"Manager{i}",
                                    email=f"Manager{i}{DEFAULT_MAIL_EXTENSION}",
                                    password=DEFAULT_VALID_PASSWORD,
-                                   first_name=f"Manager{suffix}",
-                                   last_name=f"Manager{suffix}",
+                                   first_name=f"firstName{suffix}",
+                                   last_name=f"lasName{suffix}",
                                    role=Role.MANAGER,
                                    team=team)
         managers.append(manager)
