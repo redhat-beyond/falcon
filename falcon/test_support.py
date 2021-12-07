@@ -9,7 +9,7 @@ class Random:
         return ''.join(random.choices(string.ascii_letters + string.digits, k=length))
 
     @ staticmethod
-    def alphaOnly(length: int = 5):
+    def alpha_only(length: int = 5):
         return ''.join(random.choices(string.ascii_letters, k=length))
 
     @ staticmethod
