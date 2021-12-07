@@ -1,6 +1,8 @@
 import pytest
 from users.models import User, Team, Role
-from tasks.models import Task, Priority, Status
+from tasks.models import Comment, Task, Priority, Status
+from falcon.test_support import Random
+
 
 DEFAULT_VALID_PASSWORD = "ssSSAD231!@"
 DEFAULT_MAIL_EXTENSION = "@redhat.com"
@@ -28,22 +30,24 @@ def users(teams):
     managers = []
     users_counter = 0
     for i in range(3):
+        suffix = Random.alpha_only(i)
         for team in (team1, team2):
             employee = User.create_user(username=f"User{users_counter}",
                                         email=f"User{users_counter}{DEFAULT_MAIL_EXTENSION}",
                                         password=DEFAULT_VALID_PASSWORD,
-                                        first_name=f"User{users_counter}",
-                                        last_name=f"User{users_counter}",
+                                        first_name=f"firstName{suffix}",
+                                        last_name=f"lastName{suffix}",
                                         role=Role.EMPLOYEE,
                                         team=team)
             employees.append(employee)
             users_counter += 1
     for i, team in enumerate((team1, team2, team3)):
+        suffix = Random.alpha_only(i)
         manager = User.create_user(username=f"Manager{i}",
                                    email=f"Manager{i}{DEFAULT_MAIL_EXTENSION}",
                                    password=DEFAULT_VALID_PASSWORD,
-                                   first_name=f"Manager{i}",
-                                   last_name=f"Manager{i}",
+                                   first_name=f"firstName{suffix}",
+                                   last_name=f"lastName{suffix}",
                                    role=Role.MANAGER,
                                    team=team)
         managers.append(manager)
@@ -60,7 +64,8 @@ def tasks(users):
     tasks_counter = 0
     for team in teams:
         team_employees = User.objects.filter(team=team, role=Role.EMPLOYEE)
-        team_manager = User.objects.filter(team=team, role=Role.MANAGER).first()
+        team_manager = User.objects.filter(
+            team=team, role=Role.MANAGER).first()
         for employee in team_employees:
             task = Task.objects.create(title=f"Task{tasks_counter}",
                                        assignee=employee,
@@ -83,3 +88,61 @@ def test_db(tasks):
     managers = tasks[2]
     task = tasks[3]
     return teams, employees, managers, task
+
+
+@pytest.fixture
+def valid_teams():
+    return [Team.objects.create(name="Team HR", description="Human Resources"),
+            Team.objects.create(name="Team R&D", description="Research and development"),
+            Team.objects.create(name="Team QA", description="Quality Assurance")]
+
+
+@pytest.fixture
+def team_1(valid_teams):
+    return valid_teams[0]
+
+
+@pytest.fixture
+def employee_1(team_1):
+    user = User.create_user(
+        username="employee1",
+        email="user1@redhat.com",
+        password="password",
+        first_name="firstName",
+        last_name="lastName",
+        role=Role.EMPLOYEE,
+        team=team_1)
+    return user
+
+
+@pytest.fixture
+def manager_1(team_1):
+    user = User.create_user(
+        username="manager1",
+        email="user1@redhat.com",
+        password="password",
+        first_name="firstName",
+        last_name="lastName",
+        role=Role.MANAGER,
+        team=team_1)
+    return user
+
+
+@pytest.fixture
+def task_1(employee_1, manager_1):
+    task = Task.objects.create(title="new house",
+                               assignee=employee_1,
+                               created_by=manager_1,
+                               priority=Priority.HIGH,
+                               status=Status.IN_PROGRESS,
+                               description="build me a house")
+    return task
+
+
+@pytest.fixture
+def comment_1(task_1, employee_1):
+    comment = Comment.objects.create(appUser=employee_1,
+                                     task=task_1,
+                                     title="A problem",
+                                     description="I dont know how")
+    return comment
