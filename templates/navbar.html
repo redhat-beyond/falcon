@@ -15,18 +15,19 @@
     <div class="collapse navbar-collapse" id="navbarToggle">
       <div class="navbar-nav mr-auto">
         <a class="nav-item nav-link" href="/">Home</a>
+        {% if user.user.is_authenticated and user.is_manager  %}
+                <a class="nav-item nav-link" href="#">New Task</a>
+        {% endif %}
       </div>
+    </div>
       <!-- Navbar Right Side -->
       <div class="navbar-nav">
         {% if user.user.is_authenticated %}
-            {% if user.is_manager %}
-                <a class="nav-item nav-link" href="#">New Task</a>
-            {% endif %}
-            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            <a class="nav-item nav-link" href="#">{{ user.user.username }} </a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout </a>
         {% else %}
             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
         {% endif %}
       </div>
-    </div>
   </div>
 </nav>
