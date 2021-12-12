@@ -37,6 +37,12 @@ class Task(models.Model):
         return cls.objects.filter(status=status_filter)
 
     @classmethod
+    def filter_by_priority(cls, priority_filter):
+        if not isinstance(priority_filter, Status):
+            raise ValueError
+        return cls.objects.filter(status=priority_filter)
+
+    @classmethod
     def filter_by_assignee(cls, assignee_id):
         if not isinstance(assignee_id, int):
             raise TypeError

@@ -48,7 +48,7 @@ class User(models.Model):
 
     @staticmethod
     def check_valid_name(string):
-        if(len(string) > 30 or not string.isalpha()):
+        if len(string) > 30 or not string.isalpha():
             raise ValueError
 
     def delete(self, *args, **kwargs):
