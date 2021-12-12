@@ -12,22 +12,18 @@ class TestViewSingleTask:
         assert response.url == '/'
 
     def test_with_employee_logged_in(self, client, task_1, employee_1):
-        client.login(username=employee_1.user.username,
-                     password='password')
-        response = client.get(
-            f'/tasks/{task_1.id}', enforce_csrf_checks=True)
+        client.login(username=employee_1.user.username, password='password')
+        response = client.get(f'/tasks/{task_1.id}', enforce_csrf_checks=True)
         assert response.status_code == 200
         assert response.context['task'] == task_1
 
     def test_view_task_form(self, client, task_1, employee_1):
-        client.login(username=employee_1.user.username,
-                     password='password')
+        client.login(username=employee_1.user.username, password='password')
         response = client.get(f'/tasks/{task_1.id}')
         assert isinstance(response.context.get('form'), TaskForm)
 
     def test_change_status(self, client, task_1, employee_1):
-        client.login(username=employee_1.user.username,
-                     password='password')
+        client.login(username=employee_1.user.username, password='password')
         assert task_1.status == Status.IN_PROGRESS
         client.post(f'/tasks/{task_1.id}', data={'status': 'DONE'})
         updated_task = Task.objects.get(id=task_1.id)
