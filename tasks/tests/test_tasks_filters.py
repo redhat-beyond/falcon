@@ -137,8 +137,8 @@ class TestTasksFilters:
     """
     def test_team_filter(self, test_db):
         team = test_db[0][0]
-        filtered_tasks = Task.filter_by_team(team)
         assert isinstance(team, Team)
+        filtered_tasks = Task.filter_by_team(team)
         assert isinstance(filtered_tasks, QuerySet)
         assert len(filtered_tasks) > 0
         assert all(isinstance(task, Task) for task in filtered_tasks)
