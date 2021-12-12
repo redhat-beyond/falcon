@@ -1,8 +1,4 @@
 from django import forms
-from .models import Task, Priority, Status
-
-
-from django import forms
 
 from .models import Task, Priority, Status, User
 

@@ -1,5 +1,4 @@
 from django.shortcuts import render
-from django.shortcuts import redirect, render
 from tasks.forms import TaskForm
 from tasks.models import Task, Role, User
 from django.contrib import messages
@@ -18,21 +17,28 @@ def view_tasks(request):
 
 def new_task(request):
     if request.method == "POST":
-        form = TaskForm(request.POST)
+        form = TaskForm(request.user.id, request.POST)
+        taskForm = form.save(commit=False)
         if form.is_valid():
-            taskForm = form.save(commit=False)
             try:
-                Task.create_task(taskForm.title, taskForm.assignee, taskForm.created_by, taskForm.priority,
+                Task.create_task(taskForm.title, taskForm.created_by, taskForm.assignee, taskForm.priority,
                                  taskForm.status, taskForm.description)
+
                 messages.success(request, 'Task was added successfully')
                 form = TaskForm(request.user.id)
-                redirect('new_task')
             except Exception as e:
                 messages.warning(request, e)
                 form = TaskForm(request.user.id,
                                 initial={'title': taskForm.title, 'assignee': taskForm.assignee,
                                          'priority': taskForm.priority, 'status': taskForm.status,
                                          'description': taskForm.description})
+        else:
+            messages.warning(request, 'something went wrong')
+            form = TaskForm(request.user.id, initial={'title': taskForm.title,
+                                                      'priority': taskForm.priority, 'status': taskForm.status,
+                                                      'description': taskForm.description,
+                                                      'assignee': taskForm.assignee,
+                                                      })
     else:
         form = TaskForm(request.user.id)
 
