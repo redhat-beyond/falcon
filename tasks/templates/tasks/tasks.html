@@ -15,7 +15,7 @@
                             {% endif %}
                         </small>
                     </div>
-                    <h3><a class="article_title" href="#">{{ task.title|truncatechars:35 }}</a></h3>
+                    <h3><a class="article_title" href={{ task.id }}>{{ task.title|truncatechars:35 }}</a></h3>
                     <p class="article-content">{{ task.description|truncatechars:100 }}</p>
                 </article>
             {% endfor %}

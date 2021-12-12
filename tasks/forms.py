@@ -25,7 +25,7 @@ class TaskForm(forms.ModelForm):
         }
 
 
-class TaskForm(forms.ModelForm):
+class ViewTaskForm(forms.ModelForm):
 
     class Meta:
         model = Task

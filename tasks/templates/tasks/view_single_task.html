@@ -1,14 +1,19 @@
-{% extends 'base.html' %} {% block content %}
-<h1>Task {{request.user.is_authenticated}}</h1>
-<p>id={{task.id}}</p>
-<p>title={{task.title}}</p>
-<p>priority={{task.priority}}</p>
-<p>created_date={{task.created_date}}</p>
-<p>assignee={{task.assignee}}</p>
-<p>created_by={{task.created_by}}</p>
-<p>description={{task.description}}</p>
-<form action="" method="POST">
-  {% csrf_token %} {{form}}
-  <input type="submit" />
-</form>
+{% extends 'base.html' %} 
+{% block content %}
+<div class="container" style="width: 60%">
+  <div class="mb-3">
+    <h1>Task {{request.user.is_authenticated}}</h1>
+    <p>id={{task.id}}</p>
+    <p>title={{task.title}}</p>
+    <p>priority={{task.priority}}</p>
+    <p>created_date={{task.created_date}}</p>
+    <p>assignee={{task.assignee}}</p>
+    <p>created_by={{task.created_by}}</p>
+    <p>description={{task.description}}</p>
+    <form action="" method="POST">
+      {% csrf_token %} {{form}}
+      <input type="submit" />
+    </form>
+  </div>
+</div>
 {% endblock content %}

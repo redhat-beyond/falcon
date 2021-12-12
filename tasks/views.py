@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from tasks.forms import TaskForm
+from tasks.forms import TaskForm, ViewTaskForm
 from tasks.models import Task, Role, User
 from django.contrib import messages
 
@@ -49,10 +49,10 @@ def view_single_task(request, pk):
 
     user = User.objects.get(user=request.user)
     task = Task.objects.get(pk=pk)
-    form = TaskForm(instance=task)
+    form = ViewTaskForm(instance=task)
 
     if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
+        form = ViewTaskForm(request.POST, instance=task)
         if form.is_valid():
             form.save()
             redirect(f'tasks/{pk}', {'user': user})
