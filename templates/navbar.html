@@ -19,8 +19,9 @@
       <!-- Navbar Right Side -->
       <div class="navbar-nav">
         {% if user.user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'tasks' %}">View Tasks</a>
             {% if user.is_manager %}
-                <a class="nav-item nav-link" href="#">New Task</a>
+                <a class="nav-item nav-link" href={% url 'new_task' %}>New Task</a>
             {% endif %}
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
         {% else %}
