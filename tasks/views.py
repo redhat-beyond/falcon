@@ -34,11 +34,9 @@ def new_task(request):
                                          'description': taskForm.description})
         else:
             messages.warning(request, 'something went wrong')
-            form = TaskForm(request.user.id, initial={'title': taskForm.title,
-                                                      'priority': taskForm.priority, 'status': taskForm.status,
-                                                      'description': taskForm.description,
-                                                      'assignee': taskForm.assignee,
-                                                      })
+            form = TaskForm(request.user.id,
+                            initial={'title': taskForm.title, 'priority': taskForm.priority, 'status': taskForm.status,
+                                     'description': taskForm.description, 'assignee': taskForm.assignee, })
     else:
         form = TaskForm(request.user.id)
 
