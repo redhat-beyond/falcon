@@ -20,6 +20,6 @@
                 </article>
             {% endfor %}
     {% else %}
-        This page is restricted. Are you an existing user? Login.
+        This page is restricted. Are you an existing user? <a href="{% url 'login' %}"> Login</a>.
     {% endif %}
 {% endblock content %}

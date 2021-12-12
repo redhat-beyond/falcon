@@ -1,24 +1,31 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="container" style="width: 60%">
-        <div class="mb-3">
-            <div class="newfrm">
-                <p class="fs-1">NEW TASK :</p>
-                {% if messages %}
-                    <ul class="messages" style="color: red">
-                        {% for message in messages %}
-                            <li class="{{ message.tags }}">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    <br>
-                {% endif %}
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Create Task">
-                </form>
+    {% if manager %}
+        <div class="container" style="width: 60%">
+            <div class="mb-3">
+                <div class="newfrm">
+                    <p class="fs-1">NEW TASK :</p>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}" style="color:{{ color }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        <br>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" value="Create Task">
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
+    {% elif user.user.is_authenticated %}
+        This page is restricted for managers only.
+    {% else %}
+        This page is restricted. Are you an existing user? <a href="{% url 'login' %}"> Login</a>.
+    {% endif %}
+
 {% endblock content %}
 
