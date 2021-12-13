@@ -19,8 +19,7 @@ def new_task(request):
     context = {'manager': False}
     if not request.user.is_anonymous:
         logged_user = User.objects.get(user=request.user)
-        if logged_user is not None:
-            context = {'user': logged_user}
+        context = {'user': logged_user}
         if logged_user.is_manager():
             color = 'red'
             if request.method == "POST":
@@ -48,8 +47,7 @@ def new_task(request):
             else:
                 form = TaskForm(request.user.id)
             context = {'form': form, 'user': logged_user, 'color': color, 'manager': True}
-
-    return render(request, 'new_task.html', context)
+    return render(request, 'tasks/new_task.html', context)
 
 
 def view_single_task(request, pk):
@@ -67,4 +65,3 @@ def view_single_task(request, pk):
             redirect(f'tasks/{pk}', {'user': user})
 
     return render(request, 'tasks/view_single_task.html', {'form': form, 'task': task, 'user': user})
-
