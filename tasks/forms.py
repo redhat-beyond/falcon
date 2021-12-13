@@ -1,5 +1,4 @@
 from django import forms
-
 from .models import Task, Priority, Status, User
 
 
@@ -24,3 +23,10 @@ class TaskForm(forms.ModelForm):
             'status': forms.Select(choices=status_choices, attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control'}),
         }
+
+
+class ViewTaskForm(forms.ModelForm):
+
+    class Meta:
+        model = Task
+        fields = ('status',)
