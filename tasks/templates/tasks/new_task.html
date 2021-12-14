@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if manager %}
+    {% if user.is_manager %}
         <div class="container" style="width: 60%">
             <div class="mb-3">
                 <div class="newfrm">

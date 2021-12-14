@@ -16,37 +16,34 @@ def view_tasks(request):
 
 
 def new_task(request):
-    context = {'manager': False}
-    if not request.user.is_anonymous:
+    context = {}
+    if request.user.is_authenticated:
         logged_user = User.objects.get(user=request.user)
         context = {'user': logged_user}
         if logged_user.is_manager():
             color = 'red'
             if request.method == "POST":
                 form = TaskForm(request.user.id, request.POST)
-                taskForm = form.save(commit=False)
+                task_form = form.save(commit=False)
+                initial_dict = {'title': task_form.title, 'assignee': task_form.assignee,
+                                'priority': task_form.priority, 'status': task_form.status,
+                                'description': task_form.description}
                 if form.is_valid():
                     try:
-                        Task.create_task(taskForm.title, taskForm.assignee, taskForm.created_by, taskForm.priority,
-                                         taskForm.status, taskForm.description)
+                        Task.create_task(task_form.title, task_form.assignee, task_form.created_by, task_form.priority,
+                                         task_form.status, task_form.description)
                         messages.success(request, 'Task was added successfully')
                         color = 'green'
                         form = TaskForm(request.user.id)
                     except Exception as e:
                         messages.warning(request, e)
-                        form = TaskForm(request.user.id,
-                                        initial={'title': taskForm.title, 'assignee': taskForm.assignee,
-                                                 'priority': taskForm.priority, 'status': taskForm.status,
-                                                 'description': taskForm.description})
+                        form = TaskForm(request.user.id, initial=initial_dict)
                 else:
                     messages.warning(request, 'something went wrong')
-                    form = TaskForm(request.user.id,
-                                    initial={'title': taskForm.title, 'priority': taskForm.priority,
-                                             'status': taskForm.status,
-                                             'description': taskForm.description, 'assignee': taskForm.assignee, })
+                    form = TaskForm(request.user.id, initial=initial_dict)
             else:
                 form = TaskForm(request.user.id)
-            context = {'form': form, 'user': logged_user, 'color': color, 'manager': True}
+            context = {'form': form, 'user': logged_user, 'color': color}
     return render(request, 'tasks/new_task.html', context)
 
 
