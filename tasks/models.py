@@ -68,6 +68,9 @@ class Task(models.Model):
             raise ValueError("The new assignee must be of the same team")
         self.assignee = new_assignee
 
+    def get_comments(self):
+        return Comment.objects.filter(task=self).order_by('id')
+
     @classmethod
     @transaction.atomic
     def create_task(cls, title, assignee, created_by, priority, status, description):
