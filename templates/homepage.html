@@ -1,4 +1,27 @@
 {% extends "base.html" %}
-{% block content %}
-    <h1>HomePage</h1>
+{% block content %} 
+{% load static %}
+<div class="text-center">
+  <img src="{%  static 'img/falcon_logo.png' %}" alt="home" />
+</div>
+<div style="height: 20px"></div>
+<div class="container px-4">
+  <div class="row gx-4 justify-content-center">
+    <div class="col-lg-8">
+      <h2>Easy – Fast – Done 💪</h2>
+      <p class="lead">
+        Falcon is designed to help you manage your team's tasks and controls
+        workflows in a better, easier way.
+      </p>
+      <ul>
+        <li>
+          It has an easy UI for managers and employees with a safe user login.
+        </li>
+        <li>Creating new tasks and assign them to your team.</li>
+        <li>Overall view of all the tasks with smart filtering system.</li>
+        <li>Comments section for discussion on each task.</li>
+      </ul>
+    </div>
+  </div>
+</div>
 {% endblock content %}
