@@ -5,6 +5,7 @@ from users.models import Role, User
 
 NUM_COMMENTS = 3
 
+
 @pytest.mark.django_db
 class TestTaskComments:
     @pytest.fixture
@@ -31,16 +32,16 @@ class TestTaskComments:
 
     @pytest.fixture
     def comments(self, user_and_manager, task):
-            user, manager = user_and_manager
-            comments = {}
-            for i in range(1, NUM_COMMENTS + 1):
-                comments[f'comment{i}'] = Comment.objects.create(appUser=user,
-                                                                 task=task,
-                                                                 title=f'Comment{i}',
-                                                                 description='This is a test comment')
-            assert len(comments) == NUM_COMMENTS
-            return task
-    
+        user, manager = user_and_manager
+        comments = {}
+        for i in range(1, NUM_COMMENTS + 1):
+            comments[f'comment{i}'] = Comment.objects.create(appUser=user,
+                                                             task=task,
+                                                             title=f'Comment{i}',
+                                                             description='This is a test comment')
+        assert len(comments) == NUM_COMMENTS
+        return task
+
     def test_get_relevant_comments(self, task, comments):
         fetched_comments = task.get_comments()
         assert len(fetched_comments) == NUM_COMMENTS

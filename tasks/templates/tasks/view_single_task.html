@@ -16,4 +16,18 @@
     </form>
   </div>
 </div>
+<h3>Comments</h3>
+{% for comment in task.get_comments %}
+  <article class="media content-section">
+    <div class="media_body">
+      <div class="article_metadata">
+          <b>Assignee: {{ comment.appUser|truncatechars:20 }}</b>
+          <small class="text-muted">
+              Created on: {{ comment.created_date|date:"F d, Y" }}
+          </small>
+      </div>
+      <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
+    </div>
+  </article>
+{% endfor %}
 {% endblock content %}
