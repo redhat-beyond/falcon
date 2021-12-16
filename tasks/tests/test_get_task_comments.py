@@ -30,26 +30,25 @@ class TestTaskComments:
                                 description='This is a test task')
         return task
 
-    @pytest.fixture
-    def comments(self, user_and_manager, task):
+    @pytest.fixture(params=[0, 1], ids=["employee", "manager"])
+    def comments(self, request, user_and_manager, task):
         user, manager = user_and_manager
         comments = {}
-        for i in range(1, 2 * NUM_COMMENTS_PER_USER + 1):
-            comment_user = user if i <= NUM_COMMENTS_PER_USER else manager
-            comments[f'comment{i}'] = Comment.objects.create(appUser=comment_user,
+        for i in range(1, NUM_COMMENTS_PER_USER + 1):
+            comments[f'comment{i}'] = Comment.objects.create(appUser=user_and_manager[request.param],
                                                              task=task,
                                                              title=f'Comment{i}',
                                                              description='This is a test comment')
-        assert len(comments) == 2 * NUM_COMMENTS_PER_USER
+        assert len(comments) == NUM_COMMENTS_PER_USER
         return task
 
     def test_get_relevant_comments(self, task, comments):
         fetched_comments = task.get_comments()
-        assert len(fetched_comments) == 2 * NUM_COMMENTS_PER_USER
+        assert len(fetched_comments) == NUM_COMMENTS_PER_USER
         assert isinstance(fetched_comments, QuerySet)
         assert all(isinstance(comment, Comment) for comment in fetched_comments)
-        assert all(comment.appUser == task.assignee or comment.appUser == task.created_by
-                   for comment in fetched_comments)
+        assert (all(comment.appUser == task.assignee for comment in fetched_comments) or
+               all(comment.appUser == task.created_by for comment in fetched_comments))
 
     def test_comment_ordered_by_id_ascending(self, task, comments):
         fetched_comments = task.get_comments()
