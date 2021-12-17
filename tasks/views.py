@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from tasks.forms import TaskForm, ViewTaskForm
+from tasks.forms import CommentForm, TaskForm, ViewTaskForm
 from tasks.models import Task, Role, User
 from django.contrib import messages
 
@@ -53,12 +53,26 @@ def view_single_task(request, pk):
 
     user = User.objects.get(user=request.user)
     task = Task.objects.get(pk=pk)
-    form = ViewTaskForm(instance=task)
+    task_form = ViewTaskForm(instance=task)
+    comment_form = CommentForm(user, task)
 
     if request.method == 'POST':
-        form = ViewTaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            redirect(f'tasks/{pk}', {'user': user})
+        if 'taskSubmit' in request.POST:
+            task_form = ViewTaskForm(request.POST, instance=task)
+            if task_form.is_valid():
+                task_form.save()
+        elif 'commentSubmit' in request.POST:
+            comment_form = CommentForm(user, task, request.POST)
+            if comment_form.is_valid():
+                new_comment = comment_form.save(commit=False)
+                new_comment.appUser = user
+                new_comment.task = task
+                new_comment.title = f"task id: {task.id}, commented by: {user.user.username}"
+                new_comment.save()
+                comment_form = CommentForm(user, task)
 
-    return render(request, 'tasks/view_single_task.html', {'form': form, 'task': task, 'user': user})
+        redirect(f'tasks/{pk}', {'user': user})
+
+    return render(request,
+                  'tasks/view_single_task.html',
+                  {'task_form': task_form, 'comment_form': comment_form, 'task': task, 'user': user})
