@@ -5,14 +5,19 @@ from django.contrib import messages
 
 
 def view_tasks(request):
-    context = {}
     if not request.user.is_anonymous:
         app_user = User.objects.get(user=request.user)
-        context['tasks'] = Task.filter_by_assignee(request.user.id) if app_user.role == Role.EMPLOYEE else (
+        tasks = Task.filter_by_assignee(request.user.id) if app_user.role == Role.EMPLOYEE else (
             Task.filter_by_team(app_user.team)
         )
-        context['user'] = app_user
-    return render(request, 'tasks/tasks.html', context)
+        user = app_user
+
+    if request.method == "POST":
+        filter_task = request.POST.get('priority')
+
+        tasks = [task for task in tasks if str(task.priority) == filter_task]
+
+    return render(request, 'tasks/tasks.html', {'user': user, 'tasks': tasks})
 
 
 def new_task(request):
