@@ -1,33 +1,44 @@
-{% extends 'base.html' %} 
+{% extends "base.html" %}
 {% block content %}
-<div class="container" style="width: 60%">
-  <div class="mb-3">
-    <h1>Task {{request.user.is_authenticated}}</h1>
-    <p>id={{task.id}}</p>
-    <p>title={{task.title}}</p>
-    <p>priority={{task.priority}}</p>
-    <p>created_date={{task.created_date}}</p>
-    <p>assignee={{task.assignee}}</p>
-    <p>created_by={{task.created_by}}</p>
-    <p>description={{task.description}}</p>
-    <form action="" method="POST">
-      {% csrf_token %} {{form}}
-      <input type="submit" />
-    </form>
-  </div>
-</div>
-<h3>Comments</h3>
-{% for comment in task.get_comments %}
+{% if user.user.is_authenticated %}
+  <h2>Tasks</h2>
   <article class="media content-section">
     <div class="media_body">
       <div class="article_metadata">
-          <b>Assignee: {{ comment.appUser|truncatechars:20 }}</b>
-          <small class="text-muted">
-              Created on: {{ comment.created_date|date:"F d, Y" }}
-          </small>
+        <small class="text-muted">
+          Created on: {{ task.created_date|date:"F d, Y" }} <b> | </b>
+          Created by: {{ task.created_by }} <b> | </b>
+          Assignee: {{ task.assignee }}<b> | </b>
+          priority: {{ task.priority }}<b> | </b>
+          task id :{{ task.id }}
+          {% if user.is_staff %}
+          <b> | </b> {{ task.assignee.team }} 
+          {% endif %}
+        </small>
       </div>
-      <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
     </div>
+      <h3><a class="article_title" href="#">{{ task.title }}</a></h3>
+      <p class="article-content">{{ task.description }}</p>
+      {% if user.is_manager %}
+        <div>
+          <a class="btn btn-secondary btn-sm mt-1 md-1" href="#">Update</a>
+          <a class="btn btn-danger btn-sm mt-1 md-1" href="#">Detele</a>
+        </div>
+      {% endif %}
   </article>
-{% endfor %}
+  <h3>Comments</h3>
+  {% for comment in task.get_comments %}
+    <article class="media content-section">
+      <div class="media_body">
+        <div class="article_metadata">
+            <b>Assignee: {{ comment.appUser|truncatechars:20 }}</b>
+            <small class="text-muted">
+                Created on: {{ comment.created_date|date:"F d, Y" }}
+            </small>
+        </div>
+        <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
+      </div>
+    </article>
+  {% endfor %}
+{% endif %}
 {% endblock content %}
