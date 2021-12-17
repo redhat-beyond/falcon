@@ -1,30 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if user.user.is_authenticated %}
-        <h2>Tasks</h2>
-            <article class="media content-section">
-                <div class="media_body">
-                    <div class="article_metadata">
-                        <small class="text-muted">
-                            Created on: {{ task.created_date|date:"F d, Y" }} <b>|</b>
-                            Created by: {{ task.created_by }} <b>|</b>
-                            Assignee: {{ task.assignee }}<b>|</b>
-                            priority: {{ task.priority }}<b>|</b>
-                            task id :{{ task.id }}
-                            {% if user.is_staff %}
-                            <b>|</b> {{ task.assignee.team }} 
-                            {% endif %}
-                        </small>
-                    </div>
-		</div>
-                    <h3><a class="article_title" href="#">{{ task.title }}</a></h3>
-                    <p class="article-content">{{ task.description }}</p>
-                     {% if user.is_manager %}
-		      <div>
-		    	<a class="btn btn-secondary btn-sm mt-1 md-1" href="#">Update</a>
-		        <a class="btn btn-danger btn-sm mt-1 md-1" href="#">Detele</a>
-		      </div>
-		     {% endif %}
-             </article>
-    {% endif %}
+{% if user.user.is_authenticated%}
+<h2>{{ task.title }}</h2>
+<article class="media content-section">
+  <div class="media_body">
+    <h6><u>Description:</u></h6>
+    <p class="article-content">{{ task.description }}</p>
+    <div class="article_metadata">
+      <small class="text-muted">
+        <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
+        <b>Created by: </b>{{ task.created_by }} | 
+        <b>Assignee: </b>{{task.assignee }} | 
+        <b>Priority: </b>{{ task.priority}} | 
+        <b>Task Id: </b>{{ task.id }}
+      </small>
+    </div>
+  </div>
+  {% if user.is_employee %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <b>{{form}}</b>
+    <input class="btn btn-secondary btn-sm mt-1" type="submit" value="Change Status"/>
+  {% endif %}
+  {% if user.is_manager %}
+  <div>
+    <a class="btn btn-secondary btn-sm mt-1 md-1">Update</a>
+    <a class="btn btn-danger btn-sm mt-1 md-1">Detele</a>
+  </div>
+  {% endif %}
+</article>
+{% endif %}
 {% endblock content %}

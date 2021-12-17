@@ -1,22 +1,23 @@
 {% extends "base.html" %}
 {% block content %}
     {% if user.user.is_authenticated %}
-        <h2>Tasks</h2>
+        <h2>Tasks - {{ user.team }}</h2>
             {% for task in tasks %}
             <article class="media content-section">
+                <h3><a class="article_title" href={{ task.id }}>{{ task.title|truncatechars:35 }}</a></h3>
+                <p class="article-content">{{ task.description|truncatechars:100 }}</p>
                 <div class="media_body">
                     <div class="article_metadata">
                         <small class="text-muted">
-                            Created on: {{ task.created_date|date:"F d, Y" }} <b>|</b>
-                            Created by: {{ task.created_by|truncatechars:20 }} <b>|</b>
-                            Assignee: {{ task.assignee|truncatechars:20 }}
+                            <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
+                            <b>Created by: </b>{{ task.created_by|truncatechars:20 }} |
+                            <b>Assignee: </b>{{ task.assignee|truncatechars:20 }} |
+                            <b>Status: </b>{{ task.status|truncatechars:20 }}
                             {% if user.is_staff %}
                             <b>|</b> {{ task.assignee.team|truncatechars:20 }} 
                             {% endif %}
                         </small>
                     </div>
-                    <h3><a class="article_title" href={{ task.id }}>{{ task.title|truncatechars:35 }}</a></h3>
-                    <p class="article-content">{{ task.description|truncatechars:100 }}</p>
                 </article>
             {% endfor %}
     {% else %}
