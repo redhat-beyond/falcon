@@ -5,6 +5,8 @@ from django.contrib import messages
 
 
 def view_tasks(request):
+    tasks = object
+    user = object
     if not request.user.is_anonymous:
         app_user = User.objects.get(user=request.user)
         tasks = Task.filter_by_assignee(request.user.id) if app_user.role == Role.EMPLOYEE else (
