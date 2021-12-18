@@ -78,8 +78,8 @@ class Task(models.Model):
             raise ValueError("Title must contain at lease one character")
         assigner_role = created_by.role
         assigner_team = created_by.team
-        assigne_team = assignee.team
-        if assigne_team != assigner_team:
+        assignee_team = assignee.team
+        if assignee_team != assigner_team:
             raise ValueError("Manager can assign tasks only for his own employees")
         if assigner_role != Role.MANAGER:
             raise ValueError("User must be a manager to assign tasks")
@@ -98,6 +98,25 @@ class Task(models.Model):
     def update_priority(self, priority):
         self.priority = priority
         self.save()
+
+    @classmethod
+    @transaction.atomic
+    def update_task(cls, task_id, title, assignee, created_by, priority, status, description):
+        if title == "":
+            raise ValueError("Title must contain at lease one character")
+        assigner_role = created_by.role
+        assigner_team = created_by.team
+        assignee_team = assignee.team
+        if assignee_team != assigner_team:
+            raise ValueError("Manager can assign tasks only for his own employees")
+        if assigner_role != Role.MANAGER:
+            raise ValueError("User must be a manager to assign tasks")
+        try:
+            current_task = Task.objects.get(id=task_id)
+        except Task.DoesNotExist:
+            raise ValueError("Task does not exist")
+
+        return current_task
 
 
 class Comment(models.Model):

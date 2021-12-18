@@ -62,3 +62,49 @@ def view_single_task(request, pk):
             redirect(f'tasks/{pk}', {'user': user})
 
     return render(request, 'tasks/view_single_task.html', {'form': form, 'task': task, 'user': user})
+
+
+def edit_single_task(request, pk):
+    context = {}
+    if request.user.is_authenticated:
+        logged_user = User.objects.get(user=request.user)
+        context = {'user': logged_user}
+        if logged_user.is_manager():
+            task = Task.objects.get(id=pk)
+            form = TaskForm(request.user.id, instance=task)
+            logged_user = User.objects.get(user=request.user)
+            color = 'red'
+            if request.method == "POST":
+                color = update_task(request, task)
+                form = TaskForm(request.user.id, instance=task)
+            context = {'form': form, 'user': logged_user, 'color': color}
+
+    return render(request, 'tasks/edit_task.html/', context)
+
+
+def update_task(request, task):
+    form = TaskForm(request.user.id, request.POST, instance=task)
+    task_form = form.save(commit=False)
+    color = 'red'
+    if form.is_valid():
+        try:
+            if task_validate(task_form):
+                form.save()
+                messages.success(request, 'Task was updated')
+                color = 'green'
+        except Exception as e:
+            messages.warning(request, e)
+    return color
+
+
+def task_validate(task):
+    if task.title == "":
+        raise ValueError("Title must contain at lease one character")
+    assigner_role = task.created_by.role
+    assigner_team = task.created_by.team
+    assignee_team = task.assignee.team
+    if assignee_team != assigner_team:
+        raise ValueError("Manager can assign tasks only for his own employees")
+    if assigner_role != Role.MANAGER:
+        raise ValueError("User must be a manager to assign tasks")
+    return True
