@@ -6,9 +6,9 @@ class TaskForm(forms.ModelForm):
     def __init__(self, user_id, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
         logged_user = User.objects.filter(user_id=user_id)
-        ass = User.objects.filter(team=logged_user.first().team, role=Role.EMPLOYEE)
+        assignee_list = User.objects.filter(team=logged_user.first().team, role=Role.EMPLOYEE)
         choices = []
-        for user in ass:
+        for user in assignee_list:
             choices.append((user.user.id, f'{user.user.first_name} {user.user.last_name}'))
         self.fields['assignee'].choices = choices
         self.fields['created_by'].queryset = logged_user
