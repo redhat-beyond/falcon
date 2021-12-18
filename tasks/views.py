@@ -1,25 +1,23 @@
 from django.shortcuts import render, redirect
 from tasks.forms import TaskForm, ViewTaskForm
-from tasks.models import Task, Role, User
+from tasks.models import Task, Role, User, Priority
 from django.contrib import messages
 
 
 def view_tasks(request):
-    tasks = object
-    user = object
+    context = {}
     if not request.user.is_anonymous:
         app_user = User.objects.get(user=request.user)
-        tasks = Task.filter_by_assignee(request.user.id) if app_user.role == Role.EMPLOYEE else (
+        context['tasks'] = Task.filter_by_assignee(request.user.id) if app_user.role == Role.EMPLOYEE else (
             Task.filter_by_team(app_user.team)
         )
-        user = app_user
+        context['user'] = app_user
 
     if request.method == "POST":
-        filter_task = request.POST.get('priority')
+        priority = request.POST.get('priority')
+        context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
 
-        tasks = [task for task in tasks if str(task.priority) == filter_task]
-
-    return render(request, 'tasks/tasks.html', {'user': user, 'tasks': tasks})
+    return render(request, 'tasks/tasks.html', context)
 
 
 def new_task(request):
