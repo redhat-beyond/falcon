@@ -9,9 +9,9 @@
     <div class="article_metadata">
       <small class="text-muted">
         <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
-        <b>Created by: </b>{{ task.created_by }} | 
-        <b>Assignee: </b>{{task.assignee }} | 
-        <b>Priority: </b>{{ task.priority}} | 
+        <b>Created by: </b>{{ task.created_by.user.first_name }} {{ task.created_by.user.last_name }} |
+        <b>Assignee: </b>{{ task.assignee.user.first_name }} {{ task.assignee.user.last_name }} |
+        <b>Priority: </b>{{ task.priority}} |
         <b>Task Id: </b>{{ task.id }}
       </small>
     </div>
