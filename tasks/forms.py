@@ -13,7 +13,6 @@ class TaskForm(forms.ModelForm):
         self.fields['assignee'].choices = choices
         self.fields['created_by'].queryset = logged_user
         self.initial['created_by'] = logged_user.first()
-        self.fields['assignee'].queryset = User.objects.filter(team=logged_user.first().team, role=Role.EMPLOYEE)
 
     class Meta:
         model = Task
