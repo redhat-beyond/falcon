@@ -4,7 +4,7 @@
         <div class="container" style="width: 60%">
             <div class="mb-3">
                 <div class="newfrm">
-                    <p class="fs-1">NEW TASK :</p>
+                    <h1>New Task</h1>
                     {% if messages %}
                         <ul class="messages">
                             {% for message in messages %}
@@ -15,8 +15,8 @@
                     {% endif %}
                     <form method="POST">
                         {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" value="Create Task">
+                        <b>{{ form.as_p }}</b>
+                        <input class="btn btn-secondary btn-sm" type="submit" value="Create Task">
                     </form>
                 </div>
             </div>

@@ -1,19 +1,33 @@
-{% extends 'base.html' %} 
+{% extends "base.html" %}
 {% block content %}
-<div class="container" style="width: 60%">
-  <div class="mb-3">
-    <h1>Task {{request.user.is_authenticated}}</h1>
-    <p>id={{task.id}}</p>
-    <p>title={{task.title}}</p>
-    <p>priority={{task.priority}}</p>
-    <p>created_date={{task.created_date}}</p>
-    <p>assignee={{task.assignee}}</p>
-    <p>created_by={{task.created_by}}</p>
-    <p>description={{task.description}}</p>
-    <form action="" method="POST">
-      {% csrf_token %} {{form}}
-      <input type="submit" />
-    </form>
+{% if user.user.is_authenticated%}
+<h2>{{ task.title }}</h2>
+<article class="media content-section">
+  <div class="media_body">
+    <h6><u>Description:</u></h6>
+    <p class="article-content">{{ task.description }}</p>
+    <div class="article_metadata">
+      <small class="text-muted">
+        <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
+        <b>Created by: </b>{{ task.created_by.user.first_name }} {{ task.created_by.user.last_name }} |
+        <b>Assignee: </b>{{ task.assignee.user.first_name }} {{ task.assignee.user.last_name }} |
+        <b>Priority: </b>{{ task.priority}} |
+        <b>Task Id: </b>{{ task.id }}
+      </small>
+    </div>
   </div>
-</div>
+  {% if user.is_employee %}
+    <form action="" method="POST">
+      {% csrf_token %}
+      <b>{{form}}</b>
+    <input class="btn btn-secondary btn-sm mt-1" type="submit" value="Change Status"/>
+  {% endif %}
+  {% if user.is_manager %}
+  <div>
+    <a class="btn btn-secondary btn-sm mt-1 md-1">Edit</a>
+    <a class="btn btn-danger btn-sm mt-1 md-1">Detele</a>
+  </div>
+  {% endif %}
+</article>
+{% endif %}
 {% endblock content %}
