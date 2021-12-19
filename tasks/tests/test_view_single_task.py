@@ -1,4 +1,4 @@
-from tasks.models import Status, Task
+from tasks.models import Comment, Status, Task
 from tasks.forms import CommentForm, ViewTaskForm
 import pytest
 
@@ -53,3 +53,8 @@ class TestViewSingleTask:
         current_comments_count = len(task_1.get_comments())
         client.post(f'/tasks/{task_1.id}', data={'commentSubmit': True, 'description': content})
         assert len(task_1.get_comments()) == current_comments_count + difference
+        if content == 'This is a test comment':
+            last_comment = Comment.objects.filter(task=task_1).order_by('-id')[0]
+            assert last_comment.description == content
+            assert last_comment.appUser == employee_1
+            assert last_comment.task == task_1
