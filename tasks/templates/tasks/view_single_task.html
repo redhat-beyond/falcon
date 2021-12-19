@@ -34,7 +34,7 @@
   <article class="media content-section">
     <div class="media_body">
       <div class="article_metadata">
-          <b>{{ comment.appUser|truncatechars:20 }}</b>
+          <b>{{ comment.appUser.user.first_name|truncatechars:20 }} {{ comment.appUser.user.last_name|truncatechars:20 }}</b>
           <small class="text-muted">
               {{ comment.created_date|date:"F d, Y" }}
           </small>
