@@ -75,8 +75,10 @@ def edit_single_task(request, pk):
             logged_user = User.objects.get(user=request.user)
             color = 'red'
             if request.method == "POST":
-                color = update_task(request, task)
+                success = update_task(request, task)
                 form = TaskForm(request.user.id, instance=task)
+                if success:
+                    return redirect(f'/tasks/{pk}', {'user': logged_user})
             context = {'form': form, 'user': logged_user, 'color': color}
 
     return render(request, 'tasks/edit_task.html/', context)
@@ -85,16 +87,15 @@ def edit_single_task(request, pk):
 def update_task(request, task):
     form = TaskForm(request.user.id, request.POST, instance=task)
     task_form = form.save(commit=False)
-    color = 'red'
+    success = False
     if form.is_valid():
         try:
             if task_validate(task_form):
                 form.save()
-                messages.success(request, 'Task was updated')
-                color = 'green'
+                success = True
         except Exception as e:
             messages.warning(request, e)
-    return color
+    return success
 
 
 def task_validate(task):
