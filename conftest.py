@@ -194,8 +194,6 @@ def task_2_data(employee_1, manager_1):
     return data
 
 
-
-
 @pytest.fixture
 def comment_1(task_1, employee_1):
     comment = Comment.objects.create(appUser=employee_1,
