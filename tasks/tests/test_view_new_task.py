@@ -48,11 +48,7 @@ class TestViewNewTask:
         client.login(username=manager_1.user.username, password='password')
 
         for task in invalid_task_data:
-            try:
+            with pytest.raises(Exception):
                 client.post('/tasks/create', data=task)
                 Task.objects.get(assignee=task['assignee'])
-                assert False
-            except ValueError:
-                assert True
-            except Task.DoesNotExist:
-                assert True
+
