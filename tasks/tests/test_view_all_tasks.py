@@ -36,5 +36,5 @@ class TestAllTasksView:
     def test_filter_task_by_priority(self, client, test_db):
         user = test_db[1][0]
         client.login(username=user.user.username, password=DEFAULT_VALID_PASSWORD)
-        response = client.post(f'/tasks/', data={'priority': 'Low'})
+        response = client.post('/tasks/', data={'priority': 'Low'})
         assert all(task.priority == Priority.LOW for task in response.context['tasks'])

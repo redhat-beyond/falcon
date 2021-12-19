@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from tasks.forms import TaskForm, ViewTaskForm
-from tasks.models import Task, Role, User, Priority, Status
+from tasks.models import Task, Role, User, Priority
 from django.contrib import messages
 
 
