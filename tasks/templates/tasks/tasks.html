@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
     {% if user.user.is_authenticated %}
-        <h2>Tasks</h2>
-        <form method="POST">{% csrf_token %}
+        <h2>Tasks - {{ user.team }}</h2>
+         <form method="POST">{% csrf_token %}
             <label for="priority"></label>
             <select name="priority" id="priority">
-                <option>Select a priority</option>
+                <option selected disabled>Select a priority</option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
@@ -13,11 +13,8 @@
             </select>
             <input type="submit" value="Filter">
         </form>
-        {% for task in tasks %}
-
-        <h2>Tasks - {{ user.team }}</h2>
             {% for task in tasks %}
-<article class="media content-section">
+            <article class="media content-section">
                 <h3><a class="article_title" href={{ task.id }}>{{ task.title|truncatechars:35 }}</a></h3>
                 <p class="article-content">{{ task.description|truncatechars:100 }}</p>
                 <div class="media_body">
@@ -28,15 +25,10 @@
                             <b>Assignee: </b>{{ task.assignee.user.first_name|truncatechars:20 }} {{ task.assignee.user.last_name|truncatechars:20 }}  |
                             <b>Status: </b>{{ task.status|truncatechars:20 }}
                             {% if user.is_staff %}
-                                <b>|</b> {{ task.assignee.team|truncatechars:20 }}
+                            <b>|</b> {{ task.assignee.team|truncatechars:20 }}
                             {% endif %}
                         </small>
                     </div>
-
-                    <h3><a class="article_title" href={{ task.id }}>{{ task.title|truncatechars:35 }}</a></h3>
-                    <p class="article-content">{{ task.description|truncatechars:100 }}</p>
-            </article>
-        {% endfor %}
                 </article>
             {% endfor %}
     {% else %}
