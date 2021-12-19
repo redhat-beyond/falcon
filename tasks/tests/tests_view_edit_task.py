@@ -57,12 +57,9 @@ class TestViewEditTask:
         assert str(task_2_from_DB.status).upper() == task_2_data['status']
         assert str(task_2_from_DB.priority).upper() == task_2_data['priority']
 
-    @pytest.mark.parametrize('field', ['status', 'priority' ,'assignee' , 'created_by' ])
-    def test_edit_task_invalid(self, client, manager_1, task_2, task_2_data ,field):
+    @pytest.mark.parametrize('field', ['status', 'priority', 'assignee', 'created_by'])
+    def test_edit_task_invalid(self, client, manager_1, task_2, task_2_data, field):
         client.force_login(manager_1.user)
         task_2_data[field] = 'RANDOM'
         with pytest.raises(ValueError):
             client.post(f'/tasks/edit/{task_2.id}', data=task_2_data)
-
-
-
