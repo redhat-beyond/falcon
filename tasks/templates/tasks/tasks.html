@@ -10,8 +10,8 @@
                     <div class="article_metadata">
                         <small class="text-muted">
                             <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
-                            <b>Created by: </b>{{ task.created_by|truncatechars:20 }} |
-                            <b>Assignee: </b>{{ task.assignee|truncatechars:20 }} |
+                            <b>Created by: </b>{{ task.created_by.user.first_name|truncatechars:20 }} {{ task.created_by.user.last_name|truncatechars:20 }} |
+                            <b>Assignee: </b>{{ task.assignee.user.first_name|truncatechars:20 }} {{ task.assignee.user.last_name|truncatechars:20 }}  |
                             <b>Status: </b>{{ task.status|truncatechars:20 }}
                             {% if user.is_staff %}
                             <b>|</b> {{ task.assignee.team|truncatechars:20 }} 
