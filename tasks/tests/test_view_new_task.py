@@ -51,4 +51,3 @@ class TestViewNewTask:
             with pytest.raises(Exception):
                 client.post('/tasks/create', data=task)
                 Task.objects.get(assignee=task['assignee'])
-
