@@ -65,7 +65,7 @@ def view_single_task(request, pk):
 
 
 def edit_single_task(request, pk):
-    context = {}
+    context = {'not_auth_user': ''}
     if request.user.is_authenticated:
         logged_user = User.objects.get(user=request.user)
         context = {'user': logged_user}
@@ -78,6 +78,7 @@ def edit_single_task(request, pk):
                 success = update_task(request, task)
                 form = TaskForm(request.user.id, instance=task)
                 if success:
+
                     return redirect(f'/tasks/{pk}', {'user': logged_user})
             context = {'form': form, 'user': logged_user, 'color': color}
 
