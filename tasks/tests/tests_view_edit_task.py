@@ -5,22 +5,22 @@ import pytest
 
 @pytest.mark.django_db
 class TestViewEditTask:
-    def test_no_authenticated_edit_task(self, client):
-        response = client.get(f'/tasks/edit/{1}')
+    def test_no_authenticated_edit_task(self, client, task_1):
+        response = client.get(f'/tasks/edit/{task_1.id}')
         assert response.status_code == 200
-        assert 'not_auth_user' in response.context.keys()
+        assert 'auth' not in response.context.keys()
 
-    def test_employee_edit_task(self, client, employee_1):
+    def test_employee_edit_task(self, client, employee_1, task_1):
         client.login(username=employee_1.user.username, password='password')
-        response = client.get(f'/tasks/edit/{1}')
+        response = client.get(f'/tasks/edit/{task_1.id}')
         assert response.status_code == 200
-        assert 'not_auth_user' not in response.context.keys()
+        assert not response.context['auth']
 
     def test_manager_edit_task(self, client, manager_1, task_1):
         client.login(username=manager_1.user.username, password='password')
         response = client.get(f'/tasks/edit/{task_1.id}')
         assert response.status_code == 200
-        assert 'form' in response.context.keys()
+        assert response.context['auth']
 
     def test_view_edit_task_form(self, client, manager_1, task_1):
         client.force_login(manager_1.user)

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if user.is_manager %}
+    {% if user.is_manager and auth == True %}
         <div class="container" style="width: 60%">
             <div class="mb-3">
                 <div class="newfrm">
@@ -22,7 +22,7 @@
             </div>
         </div>
     {% elif user.user.is_authenticated %}
-        This page is restricted for managers only.
+        This page is restricted for the team managers only.
     {% else %}
         This page is restricted. Are you an existing user? <a href="{% url 'login' %}"> Login</a>.
     {% endif %}

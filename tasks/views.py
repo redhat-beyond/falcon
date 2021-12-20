@@ -54,7 +54,9 @@ def view_single_task(request, pk):
     user = User.objects.get(user=request.user)
     task = Task.objects.get(pk=pk)
     form = ViewTaskForm(instance=task)
-
+    task_creator = User.objects.get(user=task.created_by)
+    if user.team.id != task_creator.team.id:
+        return redirect('/')
     if request.method == 'POST':
         form = ViewTaskForm(request.POST, instance=task)
         if form.is_valid():
@@ -65,11 +67,13 @@ def view_single_task(request, pk):
 
 
 def edit_single_task(request, pk):
-    context = {'not_auth_user': ''}
+    context = {}
     if request.user.is_authenticated:
         logged_user = User.objects.get(user=request.user)
-        context = {'user': logged_user}
-        if logged_user.is_manager():
+        context = {'user': logged_user, 'auth': False}
+        task = Task.objects.get(id=pk)
+        task_creator = User.objects.get(user=task.created_by)
+        if logged_user.is_manager() and task_creator.team.id == logged_user.team.id:
             task = Task.objects.get(id=pk)
             form = TaskForm(request.user.id, instance=task)
             logged_user = User.objects.get(user=request.user)
@@ -78,9 +82,8 @@ def edit_single_task(request, pk):
                 success = update_task(request, task)
                 form = TaskForm(request.user.id, instance=task)
                 if success:
-
                     return redirect(f'/tasks/{pk}', {'user': logged_user})
-            context = {'form': form, 'user': logged_user, 'color': color}
+            context = {'form': form, 'user': logged_user, 'color': color, 'auth': True}
 
     return render(request, 'tasks/edit_task.html/', context)
 
