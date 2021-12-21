@@ -49,8 +49,8 @@ class CommentForm(forms.ModelForm):
                                   widget=forms.Textarea(attrs={
                                                  'class': 'form-control w-50',
                                                  'rows': '4',
-                                                 'placeholder': 'Add new comment ...'}),
-                                  error_messages={'required': 'Comment must contain text !'})
+                                                 'placeholder': 'Add new comment...'}),
+                                  error_messages={'required': 'Comment must contain text!'})
 
     def __init__(self, user, task, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
