@@ -28,17 +28,17 @@ class TestViewEditTask:
         assert response.status_code == 200
         assert isinstance(response.context.get('form'), TaskForm)
 
-    def test_load_edit_view(self, client, manager_1, task_2, task_2_data):
+    def test_load_edit_view(self, client, manager_1, task_2):
         client.force_login(manager_1.user)
         response = client.get(f'/tasks/edit/{task_2.id}')
         assert response.status_code == 200
         form_load_data = response.context['form'].initial
-        assert form_load_data['title'] == task_2_data['title']
-        assert form_load_data['assignee'] == task_2_data['assignee']
-        assert form_load_data['created_by'] == task_2_data['created_by']
-        assert form_load_data['description'] == task_2_data['description']
-        assert str(form_load_data['status']).upper() == task_2_data['status']
-        assert str(form_load_data['priority']).upper() == task_2_data['priority']
+        assert form_load_data['title'] == task_2.title
+        assert form_load_data['assignee'] == task_2.assignee.user.id
+        assert form_load_data['created_by'] == task_2.created_by
+        assert form_load_data['description'] == task_2.description
+        assert form_load_data['status'] == task_2.status
+        assert form_load_data['priority'] == task_2.priority
 
     def test_edit_task_valid(self, client, manager_1, task_2, task_2_data, employee_11):
         client.force_login(manager_1.user)
