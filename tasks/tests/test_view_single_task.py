@@ -1,6 +1,8 @@
 from tasks.models import Comment, Status, Task
 from tasks.forms import CommentForm, ViewTaskForm
 import pytest
+import random
+import string
 
 
 @pytest.mark.django_db
@@ -58,3 +60,17 @@ class TestViewSingleTask:
             assert last_comment.description == content
             assert last_comment.appUser == employee_1
             assert last_comment.task == task_1
+
+    @pytest.mark.parametrize('comment_len',
+                             [(10**i) for i in range(0, 5)] + [999],
+                             )
+    def test_add_new_comment_different_lengths(self, comment_len, client, task_1, employee_1):
+        for i in range(10):
+            comment_content = ''.join(random.choices(string.ascii_letters + string.punctuation + string.digits,
+                                                     k=comment_len))
+            current_comments_count = len(task_1.get_comments())
+            special_chars = [char for char in comment_content if char in string.punctuation]
+            client.login(username=employee_1.user.username, password='password')
+            client.post(f'/tasks/{task_1.id}', data={'commentSubmit': True, 'description': comment_content})
+            diff = 0 if comment_len > 999 else 1
+            assert len(task_1.get_comments()) == current_comments_count + diff, f'Special chars: {special_chars}'

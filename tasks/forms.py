@@ -45,7 +45,7 @@ class ViewTaskForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    description = forms.CharField(required=True, strip=True,
+    description = forms.CharField(required=True, strip=True, max_length=999,
                                   widget=forms.Textarea(attrs={
                                                  'class': 'form-control w-50',
                                                  'rows': '4',
