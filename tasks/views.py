@@ -16,7 +16,7 @@ def view_tasks(request):
 
 
 def new_task(request):
-    context = {}
+    context = {'not_auth_user': ''}
     if request.user.is_authenticated:
         logged_user = User.objects.get(user=request.user)
         context = {'user': logged_user}

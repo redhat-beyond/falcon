@@ -3,7 +3,6 @@ from users.models import User, Team, Role
 from tasks.models import Comment, Task, Priority, Status
 from falcon.test_support import Random
 
-
 DEFAULT_VALID_PASSWORD = "ssSSAD231!@"
 DEFAULT_MAIL_EXTENSION = "@redhat.com"
 DEFAULT_DATA_DESCRIPTION = "This is test data"
@@ -103,6 +102,11 @@ def team_1(valid_teams):
 
 
 @pytest.fixture
+def team_2(valid_teams):
+    return valid_teams[1]
+
+
+@pytest.fixture
 def employee_1(team_1):
     user = User.create_user(
         username="employee1",
@@ -112,6 +116,19 @@ def employee_1(team_1):
         last_name="lastName",
         role=Role.EMPLOYEE,
         team=team_1)
+    return user
+
+
+@pytest.fixture
+def employee_2(team_2):
+    user = User.create_user(
+        username="employee2",
+        email="user1@redhat.com",
+        password="password",
+        first_name="firstName",
+        last_name="lastName",
+        role=Role.EMPLOYEE,
+        team=team_2)
     return user
 
 
@@ -146,3 +163,65 @@ def comment_1(task_1, employee_1):
                                      title="A problem",
                                      description="I dont know how")
     return comment
+
+
+@pytest.fixture
+def valid_task_data(employee_1, manager_1):
+    data = [
+        {
+            'title': 'new house',
+            'assignee': employee_1.user.id,
+            'created_by': manager_1.user.id,
+            'priority': 'LOW',
+            'status': 'DONE',
+            'description': 'hey there'
+        },
+        {
+            'title': 'new pool',
+            'assignee': employee_1.user.id,
+            'created_by': manager_1.user.id,
+            'priority': 'LOW',
+            'status': 'DONE',
+            'description': 'hey there lets swim'
+        },
+    ]
+    return data
+
+
+@pytest.fixture
+def invalid_task_data(employee_1, employee_2, manager_1):
+    data = [
+        {
+            'title': 'new house',
+            'assignee': employee_1.user.id,
+            'created_by': manager_1.user.id,
+            'priority': 'RANDOM',
+            'status': 'DONE',
+            'description': 'hey there'
+        },
+        {
+            'title': 'new house',
+            'assignee': employee_1.user.id,
+            'created_by': employee_1.user.id,
+            'priority': 'LOW',
+            'status': 'DONE',
+            'description': 'hey there'
+        },
+        {
+            'title': 'new house',
+            'assignee': employee_1.user.id,
+            'created_by': manager_1.user.id,
+            'priority': 'LOW',
+            'status': 'RANDOM',
+            'description': 'hey there'
+        },
+        {
+            'title': 'new house',
+            'assignee': employee_2.user.id,
+            'created_by': manager_1.user.id,
+            'priority': 'LOW',
+            'status': 'DONE',
+            'description': 'hey there'
+        },
+    ]
+    return data
