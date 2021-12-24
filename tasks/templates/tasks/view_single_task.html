@@ -29,19 +29,23 @@
   </div>
   {% endif %}
 </article>
-<h3>Comments</h3>
-{% for comment in task.get_comments %}
-  <article class="media content-section">
-    <div class="media_body">
-      <div class="article_metadata">
-          <b>{{ comment.appUser.user.first_name|truncatechars:20 }} {{ comment.appUser.user.last_name|truncatechars:20 }}</b>
-          <small class="text-muted">
-              {{ comment.created_date|date:"F d, Y" }}
-          </small>
+{% if task.get_comments|length > 0%}
+  <h3>Comments</h3>
+  {% for comment in task.get_comments %}
+    <article class="media content-section">
+      <div class="media_body">
+        <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
+        <div class="article_metadata">
+            
+            <small class="text-muted">
+              <b>Created on: </b>{{ comment.created_date|date:"F d, Y" }} |
+              <b>Created by: </b>{{ comment.appUser.user.first_name|truncatechars:20 }} {{ comment.appUser.user.last_name|truncatechars:20 }}
+            </small>
+        </div>
+       
       </div>
-      <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
-    </div>
-  </article>
-{% endfor %}
+    </article>
+  {% endfor %}
+{% endif %}
 {% endif %}
 {% endblock content %}
