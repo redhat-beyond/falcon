@@ -109,6 +109,19 @@ def team_2(valid_teams):
 @pytest.fixture
 def employee_1(team_1):
     user = User.create_user(
+        username="employee11",
+        email="user1@redhat.com",
+        password="password",
+        first_name="firstName",
+        last_name="lastName",
+        role=Role.EMPLOYEE,
+        team=team_1)
+    return user
+
+
+@pytest.fixture
+def employee_11(team_1):
+    user = User.create_user(
         username="employee1",
         email="user1@redhat.com",
         password="password",
@@ -146,10 +159,59 @@ def manager_1(team_1):
 
 
 @pytest.fixture
+def manager_2(team_2):
+    user = User.create_user(
+        username="manager2",
+        email="user1@redhat.com",
+        password="password",
+        first_name="firstName",
+        last_name="lastName",
+        role=Role.MANAGER,
+        team=team_2)
+    return user
+
+
+@pytest.fixture
 def task_1(employee_1, manager_1):
     task = Task.objects.create(title="new house",
                                assignee=employee_1,
                                created_by=manager_1,
+                               priority=Priority.HIGH,
+                               status=Status.IN_PROGRESS,
+                               description="build me a house")
+    return task
+
+
+@pytest.fixture
+def task_2(employee_1, manager_1):
+    task = Task.objects.create(title="new house",
+                               assignee=employee_1,
+                               created_by=manager_1,
+                               priority=Priority.HIGH,
+                               status=Status.BACKLOG,
+                               description="build me a house")
+    return task
+
+
+@pytest.fixture
+def task_2_data(employee_1, manager_1):
+    data = {
+        'title': 'new house',
+        'assignee': employee_1.user.id,
+        'created_by': manager_1,
+        'priority': 'HIGH',
+        'status': 'BACKLOG',
+        'description': 'build me a house'
+    }
+
+    return data
+
+
+@pytest.fixture
+def task_3(employee_1, manager_2):
+    task = Task.objects.create(title="new house",
+                               assignee=employee_1,
+                               created_by=manager_2,
                                priority=Priority.HIGH,
                                status=Status.IN_PROGRESS,
                                description="build me a house")
