@@ -11,6 +11,17 @@ class TestViewSingleTask:
         assert response.status_code == 302
         assert response.url == '/'
 
+    def test_no_team_account_asks_task(self, client, task_3, employee_1):
+        client.force_login(employee_1.user)
+        response = client.get(f'/tasks/{task_3.id}')
+        assert response.status_code == 302
+        assert response.url == '/'
+
+    def test_team_account_asks_task(self, client, task_1, employee_1):
+        client.force_login(employee_1.user)
+        response = client.get(f'/tasks/{task_1.id}')
+        assert response.status_code == 200
+
     def test_with_employee_logged_in(self, client, task_1, employee_1):
         client.login(username=employee_1.user.username, password='password')
         response = client.get(f'/tasks/{task_1.id}', enforce_csrf_checks=True)

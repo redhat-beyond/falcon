@@ -41,4 +41,4 @@ class ViewTaskForm(forms.ModelForm):
         widgets = {
             'status': forms.Select(choices=TaskForm.Meta.status_choices,
                                    attrs={'class': 'form-control-sm mt-1', 'style': "vertical-align: middle"}),
-         }
+        }
