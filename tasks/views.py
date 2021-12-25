@@ -55,7 +55,9 @@ def view_single_task(request, pk):
     task = Task.objects.get(pk=pk)
     task_form = ViewTaskForm(instance=task)
     comment_form = CommentForm(user, task)
-
+    task_creator = User.objects.get(user=task.created_by)
+    if user.team.id != task_creator.team.id:
+        return redirect('/')
     if request.method == 'POST':
         if 'taskSubmit' in request.POST:
             task_form = ViewTaskForm(request.POST, instance=task)
@@ -76,3 +78,52 @@ def view_single_task(request, pk):
     return render(request,
                   'tasks/view_single_task.html',
                   {'task_form': task_form, 'comment_form': comment_form, 'task': task, 'user': user})
+
+
+def edit_single_task(request, pk):
+    context = {}
+    if request.user.is_authenticated:
+        logged_user = User.objects.get(user=request.user)
+        context = {'user': logged_user, 'auth': False}
+        task = Task.objects.get(id=pk)
+        task_creator = User.objects.get(user=task.created_by)
+        if logged_user.is_manager() and task_creator.team.id == logged_user.team.id:
+            task = Task.objects.get(id=pk)
+            form = TaskForm(request.user.id, instance=task)
+            logged_user = User.objects.get(user=request.user)
+            color = 'red'
+            if request.method == "POST":
+                success = update_task(request, task)
+                form = TaskForm(request.user.id, instance=task)
+                if success:
+                    return redirect(f'/tasks/{pk}', {'user': logged_user})
+            context = {'form': form, 'user': logged_user, 'color': color, 'auth': True}
+
+    return render(request, 'tasks/edit_task.html/', context)
+
+
+def update_task(request, task):
+    form = TaskForm(request.user.id, request.POST, instance=task)
+    task_form = form.save(commit=False)
+    success = False
+    if form.is_valid():
+        try:
+            if task_validate(task_form):
+                form.save()
+                success = True
+        except Exception as e:
+            messages.warning(request, e)
+    return success
+
+
+def task_validate(task):
+    if task.title == "":
+        raise ValueError("Title must contain at lease one character")
+    assigner_role = task.created_by.role
+    assigner_team = task.created_by.team
+    assignee_team = task.assignee.team
+    if assignee_team != assigner_team:
+        raise ValueError("Manager can assign tasks only for his own employees")
+    if assigner_role != Role.MANAGER:
+        raise ValueError("User must be a manager to assign tasks")
+    return True

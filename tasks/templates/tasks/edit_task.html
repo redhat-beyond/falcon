@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% if user.is_manager and auth == True %}
+        <div class="container" style="width: 60%">
+            <div class="mb-3">
+                <div class="newfrm">
+                    <p class="fs-1">EDIT TASK :</p>
+                    {% if messages %}
+                        <ul class="messages">
+                            {% for message in messages %}
+                                <li class="{{ message.tags }}" style="color:{{ color }}">{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        <br>
+                    {% endif %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        <b>{{ form.as_p }}</b>
+                        <input type="submit" value="Update Task">
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% elif user.user.is_authenticated %}
+        This page is restricted for the team managers only.
+    {% else %}
+        This page is restricted. Are you an existing user? <a href="{% url 'login' %}"> Login</a>.
+    {% endif %}
+{% endblock content %}
+
+
