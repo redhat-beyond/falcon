@@ -2,7 +2,7 @@ import pytest
 
 from conftest import DEFAULT_VALID_PASSWORD
 from tasks.models import Task, Priority
-from users.models import User, Role
+from users.models import User
 
 
 @pytest.mark.django_db
