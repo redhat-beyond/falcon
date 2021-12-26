@@ -40,7 +40,7 @@ class TestAllTasksView:
         response = client.post('/tasks/', data={'priority': 'Low'})
         assert all(task.priority == Priority.LOW for task in response.context['tasks'])
 
-    @pytest.mark.parametrize('EmpOrMan, priority_text',
+    @pytest.mark.parametrize('user_type, priority_text',
                              [
                                  (1, 'Low'),
                                  (1, 'Medium'),
@@ -62,14 +62,14 @@ class TestAllTasksView:
                                 'manager - Critical'
                              ]
                              )
-    def test_filter_task_by_priority_randomized(self, client, test_db, priority_text, EmpOrMan):
+    def test_filter_task_by_priority_randomized(self, client, test_db, priority_text, user_type):
         priority_dict = {
             'Low': Priority.LOW,
             'Medium': Priority.MEDIUM,
             'High': Priority.HIGH,
             'Critical': Priority.CRITICAL
         }
-        user = test_db[EmpOrMan][0]
+        user = test_db[user_type][0]
         priority = priority_dict[priority_text]
         client.login(username=user.user.username, password=DEFAULT_VALID_PASSWORD)
         response = client.post('/tasks/', data={'priority': priority_text})
