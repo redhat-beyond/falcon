@@ -1,9 +1,8 @@
 import pytest
-import random
 
 from conftest import DEFAULT_VALID_PASSWORD
 from tasks.models import Task, Priority
-from users.models import User
+from users.models import User, Role
 
 
 @pytest.mark.django_db
@@ -41,17 +40,27 @@ class TestAllTasksView:
         response = client.post('/tasks/', data={'priority': 'Low'})
         assert all(task.priority == Priority.LOW for task in response.context['tasks'])
 
-    def test_filter_task_by_priority_randomized(self, client, test_db):
+    @pytest.mark.parametrize('flag, priority_text',
+                             [
+                                 (1, 'Low'),
+                                 (1, 'Medium'),
+                                 (1, 'High'),
+                                 (1, 'Critical'),
+                                 (2, 'Low'),
+                                 (2, 'Medium'),
+                                 (2, 'High'),
+                                 (2, 'Critical'),
+
+                             ])
+    def test_filter_task_by_priority_randomized(self, client, test_db, priority_text, flag):
         priority_dict = {
             'Low': Priority.LOW,
             'Medium': Priority.MEDIUM,
             'High': Priority.HIGH,
             'Critical': Priority.CRITICAL
         }
-        for i in range(10):
-            employee_or_manager = random.randrange(1, 3)
-            priority_text, priority = random.choice(list(priority_dict.items()))
-            user = random.choice(list(test_db[employee_or_manager]))
-            client.login(username=user.user.username, password=DEFAULT_VALID_PASSWORD)
-            response = client.post('/tasks/', data={'priority': priority_text})
-            assert all(task.priority == priority for task in response.context['tasks'])
+        user = test_db[flag][0]
+        priority = priority_dict[priority_text]
+        client.login(username=user.user.username, password=DEFAULT_VALID_PASSWORD)
+        response = client.post('/tasks/', data={'priority': priority_text})
+        assert all(task.priority == priority for task in response.context['tasks'])
