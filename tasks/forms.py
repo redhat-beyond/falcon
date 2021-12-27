@@ -1,6 +1,8 @@
 from django import forms
 from .models import Comment, Task, Priority, Status, User, Role
 
+MAX_COMMENT_LEN = 999
+
 
 class TaskForm(forms.ModelForm):
     def __init__(self, user_id, *args, **kwargs):
@@ -45,7 +47,7 @@ class ViewTaskForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    description = forms.CharField(required=True, strip=True, max_length=999,
+    description = forms.CharField(required=True, strip=True, max_length=MAX_COMMENT_LEN,
                                   widget=forms.Textarea(attrs={
                                                  'class': 'form-control w-50',
                                                  'rows': '4',

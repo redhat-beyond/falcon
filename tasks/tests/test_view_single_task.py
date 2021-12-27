@@ -1,8 +1,10 @@
 from tasks.models import Comment, Status, Task
-from tasks.forms import CommentForm, ViewTaskForm
+from tasks.forms import MAX_COMMENT_LEN, CommentForm, ViewTaskForm
 import pytest
 import random
 import string
+
+VALID_COMMENT_CHARS = string.punctuation + string.digits + string.ascii_letters
 
 
 @pytest.mark.django_db
@@ -55,10 +57,23 @@ class TestViewSingleTask:
                              [
                                 ('This is a test comment', 1),
                                 ('', 0),
+                                ('a', 1),
+                                (''.join(random.choices(string.punctuation, k=1)), 1),
+                                (''.join(random.choices(string.punctuation, k=40)), 1),
+                                ('a'*MAX_COMMENT_LEN, 1),
+                                ('a'*(MAX_COMMENT_LEN + 1), 0),
+                                (''.join(random.choices(VALID_COMMENT_CHARS, k=400)), 1),
+
                              ],
                              ids=[
                                 "valid_comment_success",
                                 "empty_comment_fails",
+                                "single_char_comment_success",
+                                "single_special_char_comment_success",
+                                "multiple_special_chars_comment_success",
+                                "max_len_comment_success",
+                                "too_long_comment_fails",
+                                "long_comment_success"
                              ]
                              )
     def test_add_new_comment(self, client, task_1, employee_1, content, difference):
@@ -71,17 +86,3 @@ class TestViewSingleTask:
             assert last_comment.description == content
             assert last_comment.appUser == employee_1
             assert last_comment.task == task_1
-
-    @pytest.mark.parametrize('comment_len',
-                             [(10**i) for i in range(0, 5)] + [999],
-                             )
-    def test_add_new_comment_different_lengths(self, comment_len, client, task_1, employee_1):
-        for i in range(10):
-            comment_content = ''.join(random.choices(string.ascii_letters + string.punctuation + string.digits,
-                                                     k=comment_len))
-            current_comments_count = len(task_1.get_comments())
-            special_chars = [char for char in comment_content if char in string.punctuation]
-            client.login(username=employee_1.user.username, password='password')
-            client.post(f'/tasks/{task_1.id}', data={'commentSubmit': True, 'description': comment_content})
-            diff = 0 if comment_len > 999 else 1
-            assert len(task_1.get_comments()) == current_comments_count + diff, f'Special chars: {special_chars}'
