@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from tasks.forms import CommentForm, TaskForm, ViewTaskForm
-from tasks.models import Task, Role, User
+from tasks.models import Task, Role, User, Priority
 from django.contrib import messages
 
 
@@ -12,6 +12,11 @@ def view_tasks(request):
             Task.filter_by_team(app_user.team)
         )
         context['user'] = app_user
+
+    if request.method == "POST":
+        priority = request.POST.get('priority')
+        context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
+
     return render(request, 'tasks/tasks.html', context)
 
 
