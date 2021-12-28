@@ -1,5 +1,7 @@
 from django import forms
-from .models import Task, Priority, Status, User, Role
+from .models import Comment, Task, Priority, Status, User, Role
+
+MAX_COMMENT_LEN = 999
 
 
 class TaskForm(forms.ModelForm):
@@ -41,4 +43,23 @@ class ViewTaskForm(forms.ModelForm):
         widgets = {
             'status': forms.Select(choices=TaskForm.Meta.status_choices,
                                    attrs={'class': 'form-control-sm mt-1', 'style': "vertical-align: middle"}),
-        }
+         }
+
+
+class CommentForm(forms.ModelForm):
+    description = forms.CharField(required=True, strip=True, max_length=MAX_COMMENT_LEN,
+                                  widget=forms.Textarea(attrs={
+                                                 'class': 'form-control w-50',
+                                                 'rows': '4',
+                                                 'placeholder': 'Add new comment...'}),
+                                  error_messages={'required': 'Comment must contain text!'})
+
+    def __init__(self, user, task, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['description'].label = ''
+        self.user = user
+        self.task = task
+
+    class Meta:
+        model = Comment
+        fields = ('description',)

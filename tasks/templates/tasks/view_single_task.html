@@ -19,10 +19,11 @@
       {% if user.is_employee %}
         <form action="" method="POST">
           {% csrf_token %}
-          <b>{{form}}</b>
+          <b>{{task_form}}</b>
           <input
             class="btn btn-secondary btn-sm mt-1"
             type="submit"
+            name="taskSubmit"
             value="Change Status"
           />
         </form>
@@ -49,6 +50,21 @@
           </div>
         </article>
       {% endfor %}
+      <form method="POST" class="mt-4">
+        <div class="form-group">
+          <label><b>New comment</b></label>
+          {% csrf_token %}
+          {% if comment_form.errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for error in comment_form.errors.values %}
+                {{ error|striptags }}
+              {% endfor %}
+            </div>
+          {% endif %}
+          {{ comment_form.description }}
+        </div>
+        <input type="submit"  value="Post" name="commentSubmit" class="btn btn-success btn-sm mt-2" />
+      </form>
     {% endif %}
   {% endif %}
 {% endblock content %}
