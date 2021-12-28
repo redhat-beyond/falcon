@@ -15,6 +15,8 @@ def view_tasks(request):
 
     if request.method == "POST":
         priority = request.POST.get('priority')
+        if priority == "":
+            return render(request, 'tasks/tasks.html', context)
         context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
 
     return render(request, 'tasks/tasks.html', context)

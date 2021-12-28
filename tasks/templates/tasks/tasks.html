@@ -5,7 +5,7 @@
          <form method="POST">{% csrf_token %}
             <label for="priority"></label>
             <select name="priority" id="priority">
-                <option selected disabled>Select a priority</option>
+                <option selected hidden value="" >Select a priority</option>
                 <option value="Low">Low</option>
                 <option value="Medium">Medium</option>
                 <option value="High">High</option>
@@ -29,6 +29,7 @@
                             {% endif %}
                         </small>
                     </div>
+                </div>
                 </article>
             {% endfor %}
     {% else %}
