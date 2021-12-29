@@ -1,4 +1,4 @@
-from tasks.models import Task
+from tasks.models import Task, Comment
 import pytest
 
 
@@ -24,10 +24,18 @@ class TestDeleteTask:
         assert response.url == '/'
         Task.objects.get(id=task_3.id)
 
-    def test_manager_delete_task(self, client, manager_1, task_1):
+    def test_manager_delete_task(self, client, manager_1, task_1, comment_1):
         client.force_login(manager_1.user)
+
+        comments = Comment.objects.filter(task_id=task_1.id)
+        assert comments.exists() is True
+
         response = client.get(f'/tasks/delete/{task_1.id}')
         assert response.status_code == 302
         assert response.url == '/tasks/'
+
         with pytest.raises(Exception):
             Task.objects.get(id=task_1.id)
+
+        comments = Comment.objects.filter(task_id=task_1.id)
+        assert comments.exists() is False

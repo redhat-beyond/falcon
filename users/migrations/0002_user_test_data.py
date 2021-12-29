@@ -10,9 +10,9 @@ class Migration(migrations.Migration):
         from users.models import User, Team, Role
 
         with transaction.atomic():
-            team_1 = Team.objects.create(name="Team HR", description="Human Resources")
-            team_2 = Team.objects.create(name="Team R&D", description="Research and development")
-            Team.objects.create(name="Team QA", description="Quality Assurance")
+            team_1 = Team.objects.create(name="Team HR!", description="Human Resources")
+            team_2 = Team.objects.create(name="Team R&D!", description="Research and development")
+            Team.objects.create(name="Team QA!", description="Quality Assurance")
 
             User.create_user(
                 username="emp1",

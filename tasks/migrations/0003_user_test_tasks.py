@@ -20,14 +20,14 @@ class Migration(migrations.Migration):
             manager_1 = User.objects.get(user__username="man1")
             manager_2 = User.objects.get(user__username="man2")
 
-            task_11 = Task.objects.create(title="new house",
+            task_11 = Task.objects.create(title="task 11",
                                           assignee=employee_1,
                                           created_by=manager_1,
                                           priority=Priority.HIGH,
                                           status=Status.IN_PROGRESS,
                                           description="build me a house")
 
-            task_12 = Task.objects.create(title="new song",
+            task_12 = Task.objects.create(title="task 12",
                                           assignee=employee_11,
                                           created_by=manager_1,
                                           priority=Priority.HIGH,

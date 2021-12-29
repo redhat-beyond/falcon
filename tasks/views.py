@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from tasks.forms import CommentForm, TaskForm, ViewTaskForm
-from tasks.models import Task, Role, User, Priority
+from tasks.models import Task, Role, User, Priority, Comment
 from django.contrib import messages
 
 
@@ -145,4 +145,5 @@ def delete_task(request, pk):
     if user.team.id != task_creator.team.id:
         return redirect('/')
     task.delete()
+    Comment.objects.filter(task_id=task.id).delete()
     return redirect('tasks')
