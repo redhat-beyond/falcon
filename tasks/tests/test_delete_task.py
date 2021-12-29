@@ -17,6 +17,13 @@ class TestDeleteTask:
         assert response.url == '/'
         Task.objects.get(id=task_1.id)
 
+    def test_manager_different_team_delete_task(self, client, task_3, manager_1):
+        client.force_login(manager_1.user)
+        response = client.get(f'/tasks/delete/{task_3.id}')
+        assert response.status_code == 302
+        assert response.url == '/'
+        Task.objects.get(id=task_3.id)
+
     def test_manager_delete_task(self, client, manager_1, task_1):
         client.force_login(manager_1.user)
         response = client.get(f'/tasks/delete/{task_1.id}')
