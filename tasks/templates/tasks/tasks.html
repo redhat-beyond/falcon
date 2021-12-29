@@ -11,6 +11,13 @@
                 <option value="High">High</option>
                 <option value="Critical">Critical</option>
             </select>
+               <label for="status"></label>
+            <select name="status" id="status">
+                <option selected hidden value="" >Select a status</option>
+                <option value="Backlog">Backlog</option>
+                <option value="InProgress">InProgress</option>
+                <option value="Done">Done</option>
+            </select>
             <input type="submit" value="Filter">
         </form>
             {% for task in tasks %}

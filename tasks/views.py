@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from tasks.forms import CommentForm, TaskForm, ViewTaskForm
-from tasks.models import Task, Role, User, Priority
+from tasks.models import Task, Role, User, Priority, Status
 from django.contrib import messages
 
 
@@ -15,8 +15,24 @@ def view_tasks(request):
 
     if request.method == "POST":
         priority = request.POST.get('priority')
-        if priority == "":
+        status = request.POST.get('status')
+
+        if status == 'InProgress':
+            status = 'in_progress'
+
+        if status == "" and priority == "":
             return render(request, 'tasks/tasks.html', context)
+
+        if status == "":
+            context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
+            return render(request, 'tasks/tasks.html', context)
+
+        if priority == "":
+
+            context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
+            return render(request, 'tasks/tasks.html', context)
+
+        context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
         context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
 
     return render(request, 'tasks/tasks.html', context)
