@@ -88,7 +88,7 @@ class TestAllTasksView:
                              ids=[
                                  'employee - Backlog',
                                  'employee - InProgress',
-                                 'employee - High',
+                                 'employee - Done',
                                  'manager - Backlog',
                                  'manager - InProgress',
                                  'manager - Done',
