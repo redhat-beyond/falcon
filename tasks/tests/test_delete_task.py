@@ -1,0 +1,26 @@
+from tasks.models import Task
+import pytest
+
+
+@pytest.mark.django_db
+class TestDeleteTask:
+    def test_no_authenticated_user_delete_task(self, client, task_1):
+        response = client.get(f'/tasks/delete/{task_1.id}')
+        assert response.status_code == 302
+        assert response.url == '/'
+        Task.objects.get(id=task_1.id)
+
+    def test_account_delete_task(self, client, task_1, employee_1):
+        client.force_login(employee_1.user)
+        response = client.get(f'/tasks/delete/{task_1.id}')
+        assert response.status_code == 302
+        assert response.url == '/'
+        Task.objects.get(id=task_1.id)
+
+    def test_manager_delete_task(self, client, manager_1, task_1):
+        client.force_login(manager_1.user)
+        response = client.get(f'/tasks/delete/{task_1.id}')
+        assert response.status_code == 302
+        assert response.url == '/tasks/'
+        with pytest.raises(Exception):
+            Task.objects.get(id=task_1.id)

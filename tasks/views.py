@@ -132,3 +132,17 @@ def task_validate(task):
     if assigner_role != Role.MANAGER:
         raise ValueError("User must be a manager to assign tasks")
     return True
+
+
+def delete_task(request, pk):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    user = User.objects.get(user=request.user)
+    if not user.is_manager():
+        return redirect('/')
+    task = Task.objects.get(pk=pk)
+    task_creator = User.objects.get(user=task.created_by)
+    if user.team.id != task_creator.team.id:
+        return redirect('/')
+    task.delete()
+    return redirect('tasks')
