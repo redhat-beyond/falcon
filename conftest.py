@@ -228,10 +228,19 @@ def comment_1(task_1, employee_1):
 
 
 @pytest.fixture
+def comment_2(task_1, employee_1):
+    comment = Comment.objects.create(appUser=employee_1,
+                                     task=task_1,
+                                     title="A problem2",
+                                     description="I dont know how2")
+    return comment
+
+
+@pytest.fixture
 def valid_task_data(employee_1, manager_1):
     data = [
         {
-            'title': 'new house',
+            'title': 'new house11',
             'assignee': employee_1.user.id,
             'created_by': manager_1.user.id,
             'priority': 'LOW',
@@ -239,7 +248,7 @@ def valid_task_data(employee_1, manager_1):
             'description': 'hey there'
         },
         {
-            'title': 'new pool',
+            'title': 'new pool11',
             'assignee': employee_1.user.id,
             'created_by': manager_1.user.id,
             'priority': 'LOW',

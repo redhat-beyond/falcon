@@ -30,19 +30,17 @@ class TestViewNewTask:
         assert isinstance(response.context.get('form'), TaskForm)
 
     def test_create_new_task_valid(self, client, manager_1, valid_task_data):
-        i = 1
         for task in valid_task_data:
             client.login(username=manager_1.user.username, password='password')
             response = client.post('/tasks/create', data=task)
             assert response.status_code == 200
-            new_task = Task.objects.get(id=i)
+            new_task = Task.objects.get(title=task['title'])
             assert new_task.title == task['title']
             assert new_task.assignee.user.id == task['assignee']
             assert new_task.created_by.user.id == task['created_by']
             assert new_task.priority.__str__().upper() == task['priority']
             assert new_task.status.__str__().upper() == task['status']
             assert new_task.description == task['description']
-            i += 1
 
     def test_create_new_task_invalid(self, client, manager_1, invalid_task_data):
         client.login(username=manager_1.user.username, password='password')
