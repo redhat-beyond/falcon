@@ -220,20 +220,18 @@ def task_3(employee_1, manager_2):
 
 @pytest.fixture
 def comment_1(task_1, employee_1):
-    comment = Comment.objects.create(appUser=employee_1,
-                                     task=task_1,
-                                     title="A problem",
-                                     description="I dont know how")
-    return comment
+    return Comment.objects.create(appUser=employee_1,
+                                  task=task_1,
+                                  title="A problem",
+                                  description="I dont know how")
 
 
 @pytest.fixture
 def comment_2(task_1, employee_1):
-    comment = Comment.objects.create(appUser=employee_1,
-                                     task=task_1,
-                                     title="A problem2",
-                                     description="I dont know how2")
-    return comment
+    return Comment.objects.create(appUser=employee_1,
+                                  task=task_1,
+                                  title="A problem2",
+                                  description="I dont know how2")
 
 
 @pytest.fixture

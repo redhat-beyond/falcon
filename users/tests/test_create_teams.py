@@ -16,10 +16,9 @@ class TestTeams:
 
     @pytest.mark.django_db(transaction=True)
     def test_create_team_with_same_name(self):
-        length = len(Team.objects.all())
-        assert len(Team.objects.all()) == length
+        base_team_len = len(Team.objects.all())
         Team.objects.create(name="Team1", description="This team will be created")
-        assert len(Team.objects.all()) == length + 1
+        assert len(Team.objects.all()) == base_team_len + 1
         with pytest.raises(Exception):
             Team.objects.create(name="Team1", description="This team will be created")
-        assert len(Team.objects.all()) == length + 1, "Team1 was created twice"
+        assert len(Team.objects.all()) == base_team_len + 1, "Team1 was created twice"

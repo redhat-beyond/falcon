@@ -10,54 +10,21 @@ class Migration(migrations.Migration):
         from users.models import User, Team, Role
 
         with transaction.atomic():
-            team_1 = Team.objects.create(name="Team HR!", description="Human Resources")
-            team_2 = Team.objects.create(name="Team R&D!", description="Research and development")
-            Team.objects.create(name="Team QA!", description="Quality Assurance")
+            team_1 = Team.objects.create(name="HR Team", description="Human Resources")
+            team_2 = Team.objects.create(name="R&D Team", description="Research and development")
+            Team.objects.create(name="QA Team", description="Quality Assurance")
 
-            User.create_user(
-                username="emp1",
-                email="user1@redhat.com",
-                password="password",
-                first_name="Eyal",
-                last_name="Golan",
-                role=Role.EMPLOYEE,
-                team=team_1)
+            users_data = [
+                ("employee111", "user1@redhat.com", "password", "Eyal", "Golan", Role.EMPLOYEE, team_1),
+                ("employee1111", "user11@redhat.com", "password", "Lior", "Nakris", Role.EMPLOYEE, team_1),
+                ("employee22", "user2@redhat.com", "password", "Zehava", "Ben", Role.EMPLOYEE, team_2),
+                ("manager11", "user13@redhat.com", "password", "Sarit", "Hadad", Role.MANAGER, team_1),
+                ("manager22", "user14@redhat.com", "password", "Eden", "Hason", Role.MANAGER, team_2),
+            ]
 
-            User.create_user(
-                username="emp11",
-                email="user1@redhat.com",
-                password="password",
-                first_name="Lior",
-                last_name="Nakris",
-                role=Role.EMPLOYEE,
-                team=team_1)
-
-            User.create_user(
-                username="emp2",
-                email="user1@redhat.com",
-                password="password",
-                first_name="Zehava",
-                last_name="Ben",
-                role=Role.EMPLOYEE,
-                team=team_2)
-
-            User.create_user(
-                username="man1",
-                email="user1@redhat.com",
-                password="password",
-                first_name="Sarit",
-                last_name="Hadad",
-                role=Role.MANAGER,
-                team=team_1)
-
-            User.create_user(
-                username="man2",
-                email="user1@redhat.com",
-                password="password",
-                first_name="Eden",
-                last_name="Hason",
-                role=Role.MANAGER,
-                team=team_2)
+            for username, email, password, first_name, last_name, role, team in users_data:
+                User.create_user(username=username, email=email, password=password, first_name=first_name,
+                                 last_name=last_name, role=role, team=team)
 
     operations = [
         migrations.RunPython(generate_data),
