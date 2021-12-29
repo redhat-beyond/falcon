@@ -24,7 +24,7 @@ class TestDeleteTask:
         assert response.url == '/'
         Task.objects.get(id=task_3.id)
 
-    def test_manager_delete_task(self, client, manager_1, task_1, comment_1 ,comment_2):
+    def test_manager_delete_task(self, client, manager_1, task_1, comment_1, comment_2):
         client.force_login(manager_1.user)
 
         comments = Comment.objects.filter(task_id=task_1.id)
