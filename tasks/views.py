@@ -28,7 +28,6 @@ def view_tasks(request):
             return render(request, 'tasks/tasks.html', context)
 
         if priority == "":
-
             context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
             return render(request, 'tasks/tasks.html', context)
 
