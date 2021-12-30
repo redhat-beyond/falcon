@@ -33,7 +33,7 @@ class TestViewNewTask:
         for task in valid_task_data:
             client.login(username=manager_1.user.username, password='password')
             response = client.post('/tasks/create', data=task)
-            assert response.status_code == 200
+            assert response.status_code == 302
             new_task = Task.objects.get(title=task['title'])
             assert new_task.title == task['title']
             assert new_task.assignee.user.id == task['assignee']

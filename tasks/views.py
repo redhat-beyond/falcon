@@ -39,9 +39,7 @@ def new_task(request):
                     try:
                         Task.create_task(task_form.title, task_form.assignee, task_form.created_by, task_form.priority,
                                          task_form.status, task_form.description)
-                        messages.success(request, 'Task was added successfully')
-                        color = 'green'
-                        form = TaskForm(request.user.id)
+                        return redirect('tasks')
                     except Exception as e:
                         messages.warning(request, e)
                         form = TaskForm(request.user.id, initial=initial_dict)
