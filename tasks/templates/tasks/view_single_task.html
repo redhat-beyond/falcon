@@ -1,70 +1,71 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% if user.user.is_authenticated%}
-    <h2>{{ task.title }}</h2>
-    <article class="media content-section">
-      <div class="media_body">
-        <h6><u>Description:</u></h6>
-        <p class="article-content">{{ task.description }}</p>
-        <div class="article_metadata">
-          <small class="text-muted">
-            <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
-            <b>Created by: </b>{{ task.created_by.user.first_name }} {{task.created_by.user.last_name }} | 
-            <b>Assignee: </b>{{task.assignee.user.first_name }} {{ task.assignee.user.last_name }} |
-            <b>Priority: </b>{{ task.priority}} | <b>Task Id: </b>{{ task.id }}
-          </small>
-        </div>
-      </div>
-      {% if user.is_employee %}
-        <form action="" method="POST">
-          {% csrf_token %}
-          <b>{{task_form}}</b>
-          <input
-            class="btn btn-secondary btn-sm mt-1"
-            type="submit"
-            name="taskSubmit"
-            value="Change Status"
-          />
-        </form>
-      {% endif %}
-      {% if user.is_manager %}
-        <div>
-          <a class="btn btn-secondary btn-sm mt-1 md-1" href="edit/{{ task.id }}">Edit</a>
-          <a class="btn btn-danger btn-sm mt-1 md-1">Detele</a>
-        </div>
-      {% endif %}
-    </article>
-    {% if task.get_comments|length > 0 %}
-    <h3>Comments</h3>
-      {% for comment in task.get_comments %}
+    {% if user.user.is_authenticated %}
+        <h2>{{ task.title }}</h2>
         <article class="media content-section">
-          <div class="media_body">
-            <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
-            <div class="article_metadata">
-              <small class="text-muted">
-                <b>Created on: </b>{{ comment.created_date|date:"F d, Y" }} |
-                <b>Created by: </b>{{ comment.appUser.user.first_name|truncatechars:20}} {{ comment.appUser.user.last_name|truncatechars:20 }}
-              </small>
+            <div class="media_body">
+                <h6><u>Description:</u></h6>
+                <p class="article-content">{{ task.description }}</p>
+                <div class="article_metadata">
+                    <small class="text-muted">
+                        <b>Created on: </b>{{ task.created_date|date:"F d, Y" }} |
+                        <b>Created by: </b>{{ task.created_by.user.first_name }} {{ task.created_by.user.last_name }} |
+                        <b>Assignee: </b>{{ task.assignee.user.first_name }} {{ task.assignee.user.last_name }} |
+                        <b>Priority: </b>{{ task.priority }} | <b>Task Id: </b>{{ task.id }}
+                    </small>
+                </div>
             </div>
-          </div>
+            {% if user.is_employee %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <b>{{ task_form }}</b>
+                    <input
+                            class="btn btn-secondary btn-sm mt-1"
+                            type="submit"
+                            name="taskSubmit"
+                            value="Change Status"
+                    />
+                </form>
+            {% endif %}
+            {% if user.is_manager %}
+                <div>
+                    <a class="btn btn-secondary btn-sm mt-1 md-1" href="edit/{{ task.id }}">Edit</a>
+                    <a class="btn btn-danger btn-sm mt-1 md-1" href="delete/{{ task.id }}">Delete</a>
+                </div>
+            {% endif %}
         </article>
-      {% endfor %}
-      <form method="POST" class="mt-4">
-        <div class="form-group">
-          <label><b>New comment</b></label>
-          {% csrf_token %}
-          {% if comment_form.errors %}
-            <div class="alert alert-danger" role="alert">
-              {% for error in comment_form.errors.values %}
-                {{ error|striptags }}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {{ comment_form.description }}
-        </div>
-        <input type="submit"  value="Post" name="commentSubmit" class="btn btn-success btn-sm mt-2" />
-      </form>
+        {% if task.get_comments|length > 0 %}
+            <h3>Comments</h3>
+            {% for comment in task.get_comments %}
+                <article class="media content-section">
+                    <div class="media_body">
+                        <p class="article-content">{{ comment.description|truncatechars:400 }}</p>
+                        <div class="article_metadata">
+                            <small class="text-muted">
+                                <b>Created on: </b>{{ comment.created_date|date:"F d, Y" }} |
+                                <b>Created
+                                    by: </b>{{ comment.appUser.user.first_name|truncatechars:20 }} {{ comment.appUser.user.last_name|truncatechars:20 }}
+                            </small>
+                        </div>
+                    </div>
+                </article>
+            {% endfor %}
+            <form method="POST" class="mt-4">
+                <div class="form-group">
+                    <label><b>New comment</b></label>
+                    {% csrf_token %}
+                    {% if comment_form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in comment_form.errors.values %}
+                                {{ error|striptags }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {{ comment_form.description }}
+                </div>
+                <input type="submit" value="Post" name="commentSubmit" class="btn btn-success btn-sm mt-2"/>
+            </form>
+        {% endif %}
     {% endif %}
-  {% endif %}
 {% endblock content %}

@@ -91,6 +91,7 @@ class TestCreateTask:
     def test_create_task(self, request, title, assignee, assigner, priority, status, description, length):
         assignee = request.getfixturevalue(assignee)
         created_by = request.getfixturevalue(assigner)
+        length += len(Task.objects.all())
         try:
             Task.create_task(title=title,
                              assignee=assignee,

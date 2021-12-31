@@ -81,11 +81,13 @@ class TestTasksFilters:
     Test filtering tasks by priority
     """
     def test_priority_filter(self, prepare_database):
+
         for priority in (Priority.LOW, Priority.HIGH, Priority.MEDIUM):
+            priority_tasks = Task.objects.filter(priority=priority)
             filtered_tasks = Task.filter_by_symbol(priority)
             assert isinstance(filtered_tasks, QuerySet)
             assert all(isinstance(task, Task) for task in filtered_tasks)
-            assert len(filtered_tasks) == 5
+            assert len(filtered_tasks) == len(priority_tasks)
             assert all(p == priority for p in filtered_tasks.values_list('priority', flat=True))
 
     """
@@ -99,10 +101,11 @@ class TestTasksFilters:
     Test filtering tasks by asignee id
     """
     def test_assignee_filter(self, prepare_database):
+        assignee_task = Task.objects.filter(assignee_id=2)
         filtered_tasks = Task.filter_by_assignee(2)
         assert isinstance(filtered_tasks, QuerySet)
         assert all(isinstance(task, Task) for task in filtered_tasks)
-        assert len(filtered_tasks) == 3
+        assert len(filtered_tasks) == len(assignee_task)
         assert all(assignee_id == 2 for assignee_id in filtered_tasks.values_list('assignee', flat=True))
 
     """
@@ -118,11 +121,13 @@ class TestTasksFilters:
     Test filtering tasks by status
     """
     def test_status_filter(self, prepare_database):
+
         for status in Status:
+            status_tasks = Task.objects.filter(status=status)
             filtered_tasks = Task.filter_by_status(status)
             assert isinstance(filtered_tasks, QuerySet)
             assert all(isinstance(task, Task) for task in filtered_tasks)
-            assert len(filtered_tasks) == 5
+            assert len(filtered_tasks) == len(status_tasks)
             assert all(s == status for s in filtered_tasks.values_list('status', flat=True))
 
     """
