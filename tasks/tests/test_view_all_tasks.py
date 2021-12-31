@@ -63,7 +63,7 @@ class TestAllTasksView:
                                  'manager - Critical'
                              ]
                              )
-    def test_filter_task_by_priority_not_randomized(self, client, test_db, priority_text, user_type, status_text):
+    def test_filter_task_by_priority(self, client, test_db, priority_text, user_type, status_text):
         priority_dict = {
             'Low': Priority.LOW,
             'Medium': Priority.MEDIUM,
@@ -94,7 +94,7 @@ class TestAllTasksView:
                                  'manager - Done',
                              ]
                              )
-    def test_filter_task_by_status_not_randomized(self, client, test_db, status_text, user_type, priority_text):
+    def test_filter_task_by_status(self, client, test_db, status_text, user_type, priority_text):
         status_dict = {
             'Backlog': Status.BACKLOG,
             'InProgress': Status.IN_PROGRESS,

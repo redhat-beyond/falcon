@@ -20,19 +20,13 @@ def view_tasks(request):
         if status == 'InProgress':
             status = 'in_progress'
 
-        if status == "" and priority == "":
-            return render(request, 'tasks/tasks.html', context)
-
-        if status == "":
+        if status == "" and priority != "":
             context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
-            return render(request, 'tasks/tasks.html', context)
-
-        if priority == "":
+        elif priority == "" and status != "":
             context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
-            return render(request, 'tasks/tasks.html', context)
-
-        context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
-        context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
+        elif priority != "" and status != "":
+            context['tasks'] = context['tasks'].filter(status=Status[status.upper()])
+            context['tasks'] = context['tasks'].filter(priority=Priority[priority.upper()])
 
     return render(request, 'tasks/tasks.html', context)
 
